@@ -25,7 +25,6 @@ export const AlertModal: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfi
             description="This action can't be undo"
             isOpen={isOpen}
             onClose={onClose}
-
         >
 
             <div className="pt-6 space-x-6 flex items-center justify-end w-full">

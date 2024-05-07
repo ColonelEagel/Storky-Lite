@@ -13,8 +13,7 @@ function CoursesPage() {
         {courses.map((course) => (
           <CourseCard
             key={course.id}
-            title={course.title}
-            description={course.description}
+            course={course}
             className="w-full md:w-[45%] lg:w-[400px] "
           />
         ))}
