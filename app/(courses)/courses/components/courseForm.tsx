@@ -60,7 +60,7 @@ export const CourseForm: React.FC<CourseFormProps> = ({ initialData }) => {
             // Implement your API call here to create or update the course
             // Example: await axios.post('/api/courses', data);
             // Example: await axios.patch(`/api/courses/${initialData.id}`, data);
-            
+            console.log(data)
             // Simulate a delay before proceeding
             setTimeout(() => {
                 console.log(data); // Log the data after 2 seconds
@@ -84,8 +84,10 @@ export const CourseForm: React.FC<CourseFormProps> = ({ initialData }) => {
             setLoading(true);
             // Implement your API call here to delete the course
             // Example: await axios.delete(`/api/courses/${initialData.id}`);
-            toast.success("Course has been deleted successfully.");
-            router.push("/courses"); // Redirect to the courses page after deletion
+
+            console.log(`${initialData?.title} Course has been deleted successfully.`);
+            toast.success(`${initialData?.title} Course has been deleted successfully.`);
+            // router.push("/courses"); // Redirect to the courses page after deletion
         } catch (error) {
             console.error("Error:", error);
             toast.error("Make sure you remove all course dependencies first");

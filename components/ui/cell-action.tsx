@@ -32,18 +32,19 @@ const CellAction: React.FC<CellActionProps> = ({ data, className }) => {
 
     const onCopy = (id: string) => {
         navigator.clipboard.writeText(id);
-        toast.success("Billboard ID copied to the clipboard.");
+        toast.success("Course ID copied to the clipboard.");
     }
     const onDelete = async () => {
         if (data.id) {
             try {
                 setLoading(true)
-                await axios.delete(`/api/${params.storeId}/billboards/${data.id}`)
+                // await axios.delete(`/api/${params.storeId}/billboards/${data.id}`)
+                console.log(data)
                 router.refresh()
                 // router.push(`/${params.storeId}/billboards`);
-                toast.success('billboard has been deleted successfully.');
+                toast.success('The Course has been deleted successfully.');
             } catch (error) {
-                toast.error("Make sure you removed all  categories first")
+                toast.error("Something went wrong while deleting the Course, try again later.")
             } finally {
                 setOpen(false)
                 setLoading(false)
@@ -67,18 +68,18 @@ const CellAction: React.FC<CellActionProps> = ({ data, className }) => {
                         <span className="sr-only">
                             open
                         </span>
-                        <EllipsisVertical className="h-4 w-4" />
+                        <EllipsisVertical  size={25} />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>
                         action
                     </DropdownMenuLabel>
-                    <DropdownMenuItem onClick={() => onCopy(data.id!)}>
+                    <DropdownMenuItem onClick={() => onCopy(data.id)}>
                         <Copy className="mr-2 h-4 w-4" />
                         Copy ID
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/billboards/${data.id}`)}>
+                    <DropdownMenuItem onClick={() => router.push(`/courses/edit/${data.id}`)}>
                         <Edit className="mr-2 h-4 w-4" />
                         update
                     </DropdownMenuItem>

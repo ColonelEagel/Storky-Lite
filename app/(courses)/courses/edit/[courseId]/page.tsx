@@ -1,9 +1,12 @@
 import { CourseForm } from "../../components/courseForm";
+import { courses } from "@/data/data";
 
-function EditCourse() {
+function EditCourse({ params }: { params: { courseId: string } }) {
+  console.log(params);
+  const course = courses.find((course) => course.id === params.courseId);
   return (
-    <div>
-      <CourseForm initialData={null} />
+    <div className="min-h-screen">
+      {course?<CourseForm initialData={course} /> : <p>Course not found</p>}
     </div>
   );
 }

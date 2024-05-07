@@ -5,6 +5,7 @@ import "./globals.css";
 
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { ToastProvider } from "@/provider/toast-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
       <Navbar />
+      <ToastProvider />
         {children}
         <Footer />
         </body>
