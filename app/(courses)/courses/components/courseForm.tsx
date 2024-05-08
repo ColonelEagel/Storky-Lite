@@ -98,7 +98,7 @@ export const CourseForm: React.FC<CourseFormProps> = ({ initialData }) => {
     };
 
     return (
-        <div className="my-auto w-full h-full">
+        <div className="w-4/6 h-fit mt-10 mx-auto">
             <AlertModal
                 isOpen={open}
                 onClose={() => setOpen(false)}

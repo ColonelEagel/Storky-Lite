@@ -3,6 +3,7 @@ import { CourseData } from "@/interface/interface";
 import { cn } from "@/lib/utils";
 import { EllipsisVertical } from "lucide-react";
 import CellAction from "./cell-action";
+import Link from "next/link";
 
 /**
  * CourseCard component
@@ -21,7 +22,9 @@ function CourseCard({course , className}: CourseCardProps): JSX.Element {
     return (
         <Card className={cn("bg-[url('/palestineLand.svg'),url('/palestineflag.svg')] bg-no-repeat bg-contain relative ", className)} style={{ backgroundPosition: "center bottom, right" }}>
             <CardHeader>
+                <Link href={`/courses/${course.id}`}  >
                 <CardTitle>{course.title}</CardTitle>
+                </Link>
                 <CardDescription>{course.description}</CardDescription>
                 <CellAction data={course} className="hover:cursor-pointer  absolute right-[5px] top-2"/>
                 
