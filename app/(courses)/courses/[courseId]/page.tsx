@@ -6,12 +6,14 @@ import { Separator } from "@/components/ui/separator";
 
 import Heading from "@/components/ui/heading";
 
-import { courses } from "@/data/data";
+import { contentData, dummyCourses, sessions } from "@/data/data";
 import { useRouter } from "next/navigation";
+import NoResults from "@/components/ui/no-results";
+import CourseGallery from "@/components/gallery";
 
 function SingleCourse({ params }: { params: { courseId: string } }) {
   const router = useRouter();
-  const course = courses.find((course) => course.id === params.courseId);
+  const course = dummyCourses.find((course) => course.id === params.courseId);
 
   return (
     <>
@@ -22,21 +24,17 @@ function SingleCourse({ params }: { params: { courseId: string } }) {
             <Heading title={course.title} description={course.description} />
 
             <Button
-              onClick={() => router.push(`/${params.courseId}/sessions/new`)}
+              onClick={() => router.push(`/courses/${params.courseId}/editSession/new`)}
             >
               <Plus className="mr-2 h-4 w-4" />
               Add New Session
             </Button>
           </div>
           <Separator className="my-4" />
-          {/* course content */}
-          {/* Media content */}
-
-          {/* sessions */}
-          {/* lessons  */}
+          <CourseGallery />
         </div>
       ) : (
-        <p>Course not found</p>
+        <NoResults />
       )}
     </>
   );

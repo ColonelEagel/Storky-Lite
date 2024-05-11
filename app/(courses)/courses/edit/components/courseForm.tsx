@@ -32,7 +32,7 @@ const formSchema = z.object({
 type CourseFormValue = z.infer<typeof formSchema>;
 
 interface CourseFormProps {
-    initialData: CourseData | null;
+    initialData?: CourseData ;
 }
 
 export const CourseForm: React.FC<CourseFormProps> = ({ initialData }) => {

@@ -1,12 +1,38 @@
-export interface NavLinkProps  {
+
+export interface NavLinkProps {
     id: number;
     href: string;
     title: string;
 }
 
-// 
+//
 export interface CourseData {
-    id: string; 
+    id: string;
     title: string;
     description: string;
+}
+
+// sessions
+export interface Session {
+    id: string;
+    courseId: string;
+    title: string;
+    description: string;
+    duration: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface Content {
+    id: string; // Assuming there is an id field which is not visible in the image
+    sessionId: string; // FK to Session
+    title: string;
+    url: string;//(image/video/pdf)
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+
+export interface MediaDisplayProps {
+    url: string;
 }

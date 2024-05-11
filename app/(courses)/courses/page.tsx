@@ -1,6 +1,6 @@
 // dummy courses data
 import CourseCard from "@/components/ui/courseCard";
-import { courses } from "@/data/data";
+import { dummyCourses } from "@/data/data";
 
 function CoursesPage() {
   return (
@@ -10,7 +10,7 @@ function CoursesPage() {
       {/* courses container */}
       <div className="flex flex-wrap justify-start gap-5 items-center ">
         {/* SINGLE  course  */}
-        {courses.map((course) => (
+        {dummyCourses.map((course) => (
           <CourseCard
             key={course.id}
             course={course}
