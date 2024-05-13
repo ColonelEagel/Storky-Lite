@@ -2,7 +2,7 @@ import NoResults from "@/components/ui/no-results";
 import { SessionForm } from "../components/sessionForm";
 import { sessions } from "@/data/data";
 
-function EditCourse({ params }: { params: { sessionId: string } }) {
+function EditSession({ params }: { params: { sessionId: string } }) {
   if (params.sessionId === "new") {
     return (
       <div className="min-h-screen">
@@ -19,4 +19,4 @@ function EditCourse({ params }: { params: { sessionId: string } }) {
   }
 }
 
-export default EditCourse;
+export default EditSession;

@@ -2,7 +2,7 @@ import { MediaDisplayProps } from "@/interface/interface";
 import NextImage from "next/image";
 
 const ImageComponent: React.FC<MediaDisplayProps> = ({ url }) => (
-    <NextImage src={url} alt="Image" className="object-cover object-center"/>
+    <NextImage src={url} alt="Image" fill className="object-cover object-center"/>
 );
 const VideoComponent: React.FC<MediaDisplayProps> = ({ url }) => (
     <video controls  className="object-cover object-center h-full w-full">
@@ -10,7 +10,7 @@ const VideoComponent: React.FC<MediaDisplayProps> = ({ url }) => (
     </video>
 );
 const PdfComponent: React.FC<MediaDisplayProps> = ({ url }) => (
-    <object data={url} type="application/pdf" width="100%" height="500px">
+    <object data={url} type="application/pdf" className="h-full w-full">
         PDF Viewer not available
     </object>
 );

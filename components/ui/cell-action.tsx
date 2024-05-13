@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 
-import { CourseData } from "@/interface/interface";
+import { CourseData, Session } from "@/interface/interface";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -18,11 +18,14 @@ import { useState } from "react";
 import axios from "axios";
 
 interface CellActionProps {
-    data: CourseData,
+    id:string,
     className?: string
+    type: string
+    children?: React.ReactNode
+    onUpdate: () => void
 }
 
-const CellAction: React.FC<CellActionProps> = ({ data, className }) => {
+const CellAction: React.FC<CellActionProps> = ({ id, className, type, children, onUpdate }) => {
 
     const router = useRouter()
     const params = useParams()
@@ -30,19 +33,27 @@ const CellAction: React.FC<CellActionProps> = ({ data, className }) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    // const onUpdate = () => {
+    //     if (type === "course") {
+    //         router.push(`/courses/edit/${data.id}`)
+    //     } else if (type === "session") {
+    //         router.push(`/courses/${params.courseId}/editSession/${data.id}`)
+    //     }
+    // }
     const onCopy = (id: string) => {
         navigator.clipboard.writeText(id);
-        toast.success("Course ID copied to the clipboard.");
+        toast.success(`${type} ID copied to the clipboard.`);
     }
     const onDelete = async () => {
-        if (data.id) {
+        if (id) {
             try {
                 setLoading(true)
-                // await axios.delete(`/api/${params.storeId}/billboards/${data.id}`)
-                console.log(data)
+                // await axios.delete(`/api/courses${params.courseId}/${type}s/${data.id}`)
+
+                // console.log(data)
                 router.refresh()
-                // router.push(`/${params.storeId}/billboards`);
-                toast.success('The Course has been deleted successfully.');
+                console.log(params)
+                toast.success(`The ${type} has been deleted successfully.`);
             } catch (error) {
                 toast.error("Something went wrong while deleting the Course, try again later.")
             } finally {
@@ -53,7 +64,7 @@ const CellAction: React.FC<CellActionProps> = ({ data, className }) => {
             console.error("data.id is null or undefined")
         }
     };
-
+    // console.log(typeof data)
     return (
         <div className={className}>
             <AlertModal
@@ -68,18 +79,18 @@ const CellAction: React.FC<CellActionProps> = ({ data, className }) => {
                         <span className="sr-only">
                             open
                         </span>
-                        <EllipsisVertical  size={25} />
+                        <EllipsisVertical size={25} />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>
                         action
                     </DropdownMenuLabel>
-                    <DropdownMenuItem onClick={() => onCopy(data.id)}>
+                    <DropdownMenuItem onClick={() => onCopy(id)}>
                         <Copy className="mr-2 h-4 w-4" />
                         Copy ID
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push(`/courses/edit/${data.id}`)}>
+                    <DropdownMenuItem onClick={() => onUpdate()}>
                         <Edit className="mr-2 h-4 w-4" />
                         update
                     </DropdownMenuItem>
@@ -87,6 +98,7 @@ const CellAction: React.FC<CellActionProps> = ({ data, className }) => {
                         <Trash className="mr-2 h-4 w-4" />
                         Delete
                     </DropdownMenuItem>
+                    {children}
                 </DropdownMenuContent>
             </DropdownMenu>
 
