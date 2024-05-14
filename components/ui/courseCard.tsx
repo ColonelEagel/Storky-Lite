@@ -25,19 +25,18 @@ import { redirect, useParams, useRouter } from "next/navigation";
 interface CourseCardProps {
   course: CourseData | Session;
   className?: string;
-
 }
 
 function CourseCard({ course, className }: CourseCardProps): JSX.Element {
-  const router = useRouter()
-  const params = useParams()
+  const router = useRouter();
+  const params = useParams();
   const handleUpdate = () => {
     router.push(`/courses/edit/${course.id}`);
   };
   return (
     <Card
       className={cn(
-        "bg-[url('/palestineLand.svg'),url('/palestineflag.svg')] bg-no-repeat bg-contain relative ",
+        "bg-[url('/palestineLand.svg'),url('/palestineflag.svg')] bg-no-repeat bg-contain relative shadow-md hover:shadow-2xl transition-shadow delay-75",
         className
       )}
       style={{ backgroundPosition: "center bottom, right" }}
