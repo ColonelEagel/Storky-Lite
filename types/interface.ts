@@ -40,3 +40,34 @@ export interface Content {
 export interface MediaDisplayProps {
   url: string;
 }
+
+export interface Student {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  coursesId: string[];
+  isAdmin: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Instructor {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  coursesId: string[];
+  invitedStudentsId: string[];
+  isAdmin: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface User {
+  name?: string | null | undefined;
+  role?: string;
+  userName?: string;
+  accessToken?: string;
+  
+}

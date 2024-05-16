@@ -1,4 +1,4 @@
-import { NavLinkProps } from "../interface/interface";
+import { Instructor, NavLinkProps, Student } from "../interface/interface";
 import { CourseData, Session, Content } from "../interface/interface";
 
 export const links: NavLinkProps[] = [
@@ -114,3 +114,26 @@ export const contentData: Content[] = [
     updatedAt: new Date(),
   },
 ];
+
+export const students:Student[]=[{
+  id: "1",
+  name: "John Doe",
+  email: "john@example.com",
+  coursesId: ["1", "2", "3"],
+  password: "XXXXXXXX",
+  isAdmin: false,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+},]
+
+export const instructors:Instructor[]=[{
+    id: "1",
+    name: "John Doe",
+    email: "john@example.com",
+    coursesId: ["1", "2", "3"],
+    invitedStudentsId: ["1", "2", "3"],
+    password: "XXXXXXXX",
+    isAdmin: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+}]

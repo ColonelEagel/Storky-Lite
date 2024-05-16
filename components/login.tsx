@@ -16,12 +16,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import HeaderComponent from "./ui/HeaderComponent";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import axios from "axios";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 export type FormData = {
   email: string;
@@ -29,12 +28,17 @@ export type FormData = {
 };
 
 const formSchema = z.object({
-  email: z.string().email({
-    message: "Invalid email address.",
-  }),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
+  email: z.string().email({ message: "Invalid email address." }),
+  password: z
+    .string()
+    .min(8)
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/,
+      {
+        message:
+          "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+      }
+    ),
 });
 type ProductFormValues = z.infer<typeof formSchema>;
 
@@ -53,22 +57,20 @@ const LoginForm = () => {
   const onSubmit = async (data: FormData) => {
     setLoading(true);
     try {
-      console.log("data form contact: ", data);
-      console.log("#".repeat(20));
+      // console.log("data form contact: ", data);
+      // console.log("#".repeat(20));
 
-      // make a post request to nodemailer with axios
-      //   const response = await axios.post("https://nodemailr.onrender.com/send", data, {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   });
-      //   console.log("response: ", response);
-      //   console.log("#".repeat(20));
-      //   console.log("data from sendEmail:", response.data);
-      //empty the form
-      //   form.reset();
-      //show toast
-      toast.success("Logged In successfully! Welcome back to Storky");
+      const result = await signIn("credentials", {
+        redirect: true,
+        email: data.email,
+        password: data.password,
+        callbackUrl: "/",
+      });
+      if (result?.error) {
+        toast.error(result.error);
+      } else {
+        toast.success("Logged In successfully! Welcome back to Storky");
+      }
     } catch (error) {
       //   console.error("Error sending email:", error);
       toast.error("Oops! Something went wrong. Please try again later.");
@@ -85,11 +87,11 @@ const LoginForm = () => {
         className="h-full flex w-full flex-col items-center justify-center  backdrop-blur-[10px]
                     rounded-3xl ring-white/80   ring-2 shadow-inner py-10  px-20 gap-4 "
       >
-          <HeaderComponent
-            title="Log In"
-            text="Welcome to Storky🌹"
-            className="mb-5"
-          />
+        <HeaderComponent
+          title="Log In"
+          text="Welcome to Storky🌹"
+          className="mb-5"
+        />
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}

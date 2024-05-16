@@ -46,8 +46,8 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    const title = initialData ? "Edit the session" : "Create a session";
-    const description = initialData ? "Edit the session" : "Add a new session";
+    const title = initialData ? "Edit the content" : "Create a content";
+    const description = initialData ? "Edit the content" : "Add a new content";
     const toastMessage = initialData
         ? "Course has been updated"
         : "Course has been created";
@@ -71,16 +71,15 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
     const onSubmit = async (data: ContentFormValue) => {
         try {
             setLoading(true);
-            // Implement your API call here to create or update the session
-            // Example: await axios.post('/api/sessions', data);
-            // Example: await axios.patch(`/api/sessions/${initialData.id}`, data);
+            // Implement your API call here to create or update the content
+            // Example: await axios.post('/api/contents', data);
+            // Example: await axios.patch(`/api/contents/${initialData.id}`, data);
             console.log(data);
             // Simulate a delay before proceeding
             setTimeout(() => {
                 console.log(data); // Log the data after 2 seconds
                 toast.success(toastMessage);
                 router.push("/courses"); // Redirect to the courses page after submission
-
                 // Delay the setLoading(false) call to simulate server delay
                 setTimeout(() => {
                     setLoading(false); // Reset loading state after another 2 seconds
@@ -96,8 +95,8 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
     const onDelete = async () => {
         try {
             setLoading(true);
-            // Implement your API call here to delete the session
-            // Example: await axios.delete(`/api/sessions/${initialData.id}`);
+            // Implement your API call here to delete the content
+            // Example: await axios.delete(`/api/contents/${initialData.id}`);
 
             console.log(
                 `${initialData?.title} Course has been deleted successfully.`
@@ -105,10 +104,10 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
             toast.success(
                 `${initialData?.title} Course has been deleted successfully.`
             );
-            // router.push("/sessions"); // Redirect to the sessions page after deletion
+            // router.push("/contents"); // Redirect to the contents page after deletion
         } catch (error) {
             console.error("Error:", error);
-            toast.error("Make sure you remove all session dependencies first");
+            toast.error("Make sure you remove all content dependencies first");
         } finally {
             setOpen(false);
             setLoading(false);

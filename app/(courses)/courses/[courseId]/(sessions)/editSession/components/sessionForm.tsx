@@ -42,7 +42,7 @@ export const SessionForm: React.FC<SessionFormProps> = ({ initialData }) => {
 
     const title = initialData ? "Edit the session" : "Create a session";
     const description = initialData ? "Edit the session" : "Add a new session";
-    const toastMessage = initialData ? "Course has been updated" : "Course has been created";
+    const toastMessage = initialData ? "Session has been updated" : "Session has been created";
     const action = initialData ? "Save changes" : "Create";
 
     const form = useForm<SessionFormValue>({
@@ -85,8 +85,8 @@ export const SessionForm: React.FC<SessionFormProps> = ({ initialData }) => {
             // Implement your API call here to delete the session
             // Example: await axios.delete(`/api/sessions/${initialData.id}`);
 
-            console.log(`${initialData?.title} Course has been deleted successfully.`);
-            toast.success(`${initialData?.title} Course has been deleted successfully.`);
+            console.log(`${initialData?.title} Session has been deleted successfully.`);
+            toast.success(`${initialData?.title} Session has been deleted successfully.`);
             // router.push("/sessions"); // Redirect to the sessions page after deletion
         } catch (error) {
             console.error("Error:", error);
@@ -131,7 +131,7 @@ export const SessionForm: React.FC<SessionFormProps> = ({ initialData }) => {
                                     <Input
                                         autoFocus
                                         disabled={loading}
-                                        placeholder="Course title"
+                                        placeholder="Session title"
                                         {...field}
                                     />
                                 </FormControl>
@@ -150,7 +150,7 @@ export const SessionForm: React.FC<SessionFormProps> = ({ initialData }) => {
                                         disabled={loading}
                                         rows={4}
                                         maxLength={200}
-                                        placeholder="Course description"
+                                        placeholder="Session description"
                                         {...field}
                                     />
                                 </FormControl>
