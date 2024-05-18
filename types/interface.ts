@@ -1,3 +1,5 @@
+import { AxiosError } from "axios";
+
 export interface NavLinkProps {
   id: number;
   href: string;
@@ -7,7 +9,7 @@ export interface NavLinkProps {
 //
 export interface CourseData {
   id: string;
-  title: string;
+  name: string;
   description: string;
 }
 
@@ -15,9 +17,9 @@ export interface CourseData {
 export interface Session {
   id: string;
   courseId: string;
-  title: string;
+  name: string;
   description: string;
-  duration: string;
+  duration: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -25,14 +27,16 @@ export interface Session {
 export interface Content {
   id: string; // Assuming there is an id field which is not visible in the image
   sessionId: string; // FK to Session
-  title: string;
-  url: {
-    type: string;
-    name: string;
-    size: number;
-    lastModified?: number;
-    lastModifiedDate?: Date;
-  }; //(image/video/pdf)
+  // title: string;
+  // url: {
+  //   type: string;
+  //   name: string;
+  //   size: number;
+  //   lastModified?: number;
+  //   lastModifiedDate?: Date;
+  // }; //(image/video/pdf)
+  filename: FileList | undefined | string;
+  name: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -68,6 +72,22 @@ export interface User {
   name?: string | null | undefined;
   role?: string;
   userName?: string;
-  accessToken?: string;
-  
+  token?: string;
+  user: UserState;
+}
+
+export interface UserState {
+  createdAt: string;
+  email: string;
+  id: 4;
+  name: string;
+  password: string;
+  role: "student" | "instructor";
+  updatedAt: string;
+}
+
+export interface RequestOptions<T> {
+  url: string;
+  onSuccess?: (data: T) => void;
+  onError?: (error: AxiosError) => void;
 }

@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CourseData, Session } from "@/interface/interface";
+import { CourseData, Session } from "@/types/interface";
 import { cn } from "@/lib/utils";
 import { EllipsisVertical } from "lucide-react";
 import CellAction from "./cell-action";
@@ -29,9 +29,8 @@ interface CourseCardProps {
 
 function CourseCard({ course, className }: CourseCardProps): JSX.Element {
   const router = useRouter();
-  const params = useParams();
   const handleUpdate = () => {
-    router.push(`/courses/edit/${course.id}`);
+    router.push(`/courses/editcourse/${course.id}`);
   };
   return (
     <Card
@@ -43,7 +42,7 @@ function CourseCard({ course, className }: CourseCardProps): JSX.Element {
     >
       <CardHeader>
         <Link href={`/courses/${course.id}`}>
-          <CardTitle>{course.title}</CardTitle>
+          <CardTitle>{course.name}</CardTitle>
         </Link>
         <CardDescription>{course.description}</CardDescription>
         <CellAction

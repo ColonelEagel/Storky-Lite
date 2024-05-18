@@ -1,6 +1,6 @@
 "use client";
 // import { contentData } from "@/data/data";
-import { Content } from "@/interface/interface";
+import { Content } from "@/types/interface";
 import { Tab } from "@headlessui/react";
 import { AccordionContent } from "@radix-ui/react-accordion";
 import { Separator } from "@/components/ui/separator";
@@ -40,12 +40,12 @@ const RenderLessonContent: React.FC<renderLessonContentProps> = ({
                                 <AccordionContent key={item.id} className="my-5 pl-5 relative">
                                     <p
                                         className={cn(
-                                            `text-lg ${selected ? "text-cyan-500" : "text-black"
-                                            } hover:text-cyan-700 `,
+                                            `text-lg ${selected ? "text-cyan-500" : "text-black" +" dark:text-white"
+                                            } hover:text-cyan-700 text-pretty  break-words`,
                                             ClassName
                                         )}
                                     >
-                                        {item.title}
+                                        {item.filename}
                                     </p>
                                     <CellAction
                                         onUpdate={() => handleUpdate(item.id)}

@@ -3,7 +3,7 @@ import * as z from "zod";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
 
@@ -21,74 +21,73 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertModal } from "@/components/modals/alert-modal";
-import { Content } from "@/types/interface";
+import { CourseData } from "@/types/interface";
 import usePostRequest from "@/app/actions/usePostRequest ";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 const formSchema = z.object({
-  //   title: z.string().min(1, { message: "Title is required" }),
-  //   url: z.object({
-  //     name: z.string(),
-  //     size: z.number(),
-  //     type: z.string(),
-  //     lastModified: z.number(),
-  //     lastModifiedDate: z.date(),
-  //   }),
-  filename: z
-    .instanceof(FileList)
-    .refine((file) => file?.length == 1, "File is required."),
-  name: z.string().min(1, { message: "Name is required" }),
+  name: z.string().min(1, { message: "Title is required" }),
+  description: z.string(),
   // Add more fields as needed
 });
 
-type ContentFormValue = z.infer<typeof formSchema>;
+type CourseFormValue = z.infer<typeof formSchema>;
 
-interface ContentFormProps {
-  initialData?: Content;
+interface CourseFormProps {
+  initialData?: CourseData;
 }
-const transformToFormData = (content: Content): ContentFormValue => {
-  return {
-    filename: content.filename instanceof FileList ? content.filename : new DataTransfer().files,
-    name: content.name,
-  };
-};
-export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
-  const [open, setOpen] = useState(false);
-  const router = useRouter();
-  const { postData, loading } = usePostRequest();
-  const param = useParams();
 
-  const title = initialData ? "Edit the content" : "Create a content";
-  const description = initialData ? "Edit the content" : "Add a new content";
+export const CourseForm: React.FC<CourseFormProps> = ({ initialData }) => {
+  const [open, setOpen] = useState(false);
+
+  const router = useRouter();
+  //   const [loading, setLoading] = useState(false);
+  //   const { data: session } = useSession();
+  const { postData, loading } = usePostRequest();
+
+  const title = initialData ? "Edit the course" : "Create a course";
+  const description = initialData ? "Edit the course" : "Add a new course";
   const toastMessage = initialData
     ? "Course has been updated"
     : "Course has been created";
   const action = initialData ? "Save changes" : "Create";
 
-  // console.log("initialData", initialData);
-  console.log(param);
-
-  const form = useForm<ContentFormValue>({
+  const form = useForm<CourseFormValue>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData ? transformToFormData(initialData) : {
-      filename: new DataTransfer().files,
+    defaultValues: initialData || {
       name: "",
-      //   title: "",
-      //   url: {
-      //     name: "",
-      //     size: 0,
-      //     type: "",
-      //     lastModified: 0,
-      //     lastModifiedDate: new Date(),
-      //   },
+      description: "",
       // Initialize more fields here
     },
   });
+  const onSubmit = async (data: CourseFormValue) => {
+    // setLoading(true);
+    // try {
+    //   await axios
+    //     .post("", data, {
+    //       headers: {
+    //         Authorization: `Bearer ${session?.user.token}`,
+    //       },
+    //     })
+    //     .then((response) => {
+    //       console.log("response", response);
+    //     });
 
-  const fileRef = form.register("filename");
-  const onSubmit = async (data: ContentFormValue) => {
+    //   setLoading(false);
+    //   toast.success(toastMessage);
+    // } catch (error) {
+    //   setLoading(false);
+
+    //   toast("Oops! Something went wrong. Please try again later.");
+
+    //   throw error;
+    // } finally {
+    //   setLoading(false);
+    // }
     try {
       await postData({
-        url: `courses/${param.courseId}/sessions/${param.sessionId}/content`,
+        url: `courses`,
         data: data,
         onSuccess: () => {
           toast.success(toastMessage);
@@ -100,36 +99,32 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
     }
   };
 
-  //   const onDelete = async () => {
-  //     try {
+  const onDelete = async () => {
+    try {
+      // Implement your API call here to delete the course
+      // Example: await axios.delete(`/api/courses/${initialData.id}`);
 
-  //       // Implement your API call here to delete the content
-  //       // Example: await axios.delete(`/api/contents/${initialData.id}`);
-
-  //       console.log(
-  //         `${initialData?.title} Course has been deleted successfully.`
-  //       );
-  //       toast.success(
-  //         `${initialData?.title} Course has been deleted successfully.`
-  //       );
-  //       // router.push("/contents"); // Redirect to the contents page after deletion
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //       toast.error("Make sure you remove all content dependencies first");
-  //     } finally {
-  //       setOpen(false);
-
-  //     }
-  //   };
+      console.log(`${initialData?.name} Course has been deleted successfully.`);
+      toast.success(
+        `${initialData?.name} Course has been deleted successfully.`
+      );
+      // router.push("/courses"); // Redirect to the courses page after deletion
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Make sure you remove all course dependencies first");
+    } finally {
+      setOpen(false);
+    }
+  };
 
   return (
     <div className="w-4/6 h-fit mt-10 mx-auto">
-      {/* <AlertModal
+      <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onDelete}
         loading={loading}
-      /> */}
+      />
       <div className="flex items-center justify-between">
         <Heading title={title} description={description} />
         {initialData && (
@@ -167,24 +162,19 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
               </FormItem>
             )}
           />
-          
           <FormField
             control={form.control}
-            name="filename"
-            render={({ field: { value, onChange, ...fieldProps } }) => (
+            name="description"
+            render={({ field }) => (
               <FormItem>
-                <FormLabel>Attache File</FormLabel>
+                <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input
-                    {...fileRef}
-                    placeholder="attach file"
-                    className="w-full rounded-sm dark:border-blue-50 border-1 outline-dashed outline-1 outline-blue-50"
-                    type="file"
-                    accept="image/*, application/pdf , video/*"
-                    onChange={(event) => {
-                      console.log(event.target.files && event.target.files[0]);
-                      onChange(event.target.files && event.target.files[0]);
-                    }}
+                  <Textarea
+                    disabled={loading}
+                    rows={4}
+                    maxLength={200}
+                    placeholder="Course description"
+                    {...field}
                   />
                 </FormControl>
                 <FormMessage />

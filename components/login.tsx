@@ -33,7 +33,7 @@ const formSchema = z.object({
     .string()
     .min(8)
     .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[_!@#$%^&*])[a-zA-Z\d_!@#$%^&*]{8,}$/,
       {
         message:
           "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
@@ -152,7 +152,7 @@ const LoginForm = () => {
             </Button>
           </form>
         </Form>
-        <p className="ml-5 mb-5 text-[#133059] backdrop-blur-[5px]">
+        <p className="ml-5 mb-5 text-[#133059] backdrop-blur-[5px] dark:text-white">
           new to storky?{" "}
           <Link
             href="/signup"

@@ -1,5 +1,5 @@
-import { Instructor, NavLinkProps, Student } from "../interface/interface";
-import { CourseData, Session, Content } from "../interface/interface";
+import { Instructor, NavLinkProps, Student } from "../types/interface";
+import { CourseData, Session, Content } from "../types/interface";
 
 export const links: NavLinkProps[] = [
     { id: 1, title: "Homepage", href: "/" },
@@ -10,17 +10,17 @@ export const links: NavLinkProps[] = [
 export const dummyCourses: CourseData[] = [
   {
       id: "1",
-      title: "React",
+      name: "React",
       description: "Learn React",
   },
   {
       id: "2",
-      title: "Node",
+      name: "Node",
       description: "Learn Node",
   },
   {
       id: "3",
-      title: "Express",
+      name: "Express",
       description: "Learn Express",
   },
 ];
@@ -30,36 +30,36 @@ export const sessions: Session[] = [
   {
     id: "1",
     courseId: "1",
-    title: "Introduction to React",
+    name: "Introduction to React",
     description: "Learn the basics of React framework",
-    duration: "1 hour",
+    duration: 1,
     createdAt: "2024-04-30T08:00:00Z",
     updatedAt: "2024-04-30T08:00:00Z",
   },
   {
     id: "2",
     courseId: "1",
-    title: "State Management in React",
+    name: "State Management in React",
     description: "Understanding state management in React",
-    duration: "1.5 hours",
+    duration: 1.5,
     createdAt: "2024-05-01T08:00:00Z",
     updatedAt: "2024-05-01T08:00:00Z",
   },
   {
     id: "3",
     courseId: "2",
-    title: "Introduction to Node.js",
+    name: "Introduction to Node.js",
     description: "Learn the basics of Node.js runtime environment",
-    duration: "1 hour",
+    duration: 1,
     createdAt: "2024-05-02T08:00:00Z",
     updatedAt: "2024-05-02T08:00:00Z",
   },
   {
     id: "3",
     courseId: "3",
-    title: "Introduction to express.js",
+    name: "Introduction to express.js",
     description: "Learn the basics of Node.js runtime environment",
-    duration: "1 hour",
+    duration: 1,
     createdAt: "2024-05-02T08:00:00Z",
     updatedAt: "2024-05-02T08:00:00Z",
   },
@@ -70,46 +70,50 @@ export const contentData: Content[] = [
   {
     id: "1",
     sessionId: "1",
-    title: "React Logo",
-    url: {
-      type: "image",
-      name: "/409734957_908831464231117_6904991865240498873_n.jpg",
-      size: 1000,},
+    // name: "React Logo",
+    // url: {
+    //   type: "image",
+    //   name: "/409734957_908831464231117_6904991865240498873_n.jpg",
+    //   size: 1000,},
+    filename:"/409734957_908831464231117_6904991865240498873_n.jpg",
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
     id: "2",
     sessionId: "1",
-    title: "React Intro Video",
-    url: {
-      type: "video",
-      name: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-      size: 1000,
-    },
+    // name: "React Intro Video",
+    // url: {
+    //   type: "video",
+    //   name: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    //   size: 1000,
+    // },
+    filename:"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
     id: "3",
     sessionId: "2",
-    title: "State Management Diagram",
-    url: {
-      type: "application/pdf",
-      name: "https://www.soundczech.cz/temp/lorem-ipsum.pdf",
-      size: 1000,},
+    // name: "State Management Diagram",
+    // url: {
+    //   type: "application/pdf",
+    //   name: "https://www.soundczech.cz/temp/lorem-ipsum.pdf",
+    //   size: 1000,},
+    filename:"https://www.soundczech.cz/temp/lorem-ipsum.pdf",
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
     id: "4",
     sessionId: "3",
-    title: "express",
-    url: {
-      type: "image",
-      name: "/images.jpeg",
-      size: 1000,
-    },
+    // name: "express",
+    // url: {
+    //   type: "image",
+    //   name: "/images.jpeg",
+    //   size: 1000,
+    // },
+    filename:"/images.jpeg",
     createdAt: new Date(),
     updatedAt: new Date(),
   },

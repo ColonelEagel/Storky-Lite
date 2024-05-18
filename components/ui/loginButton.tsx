@@ -1,6 +1,7 @@
-"use client"
+"use client";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginButton() {
   const { data: session, status } = useSession();
@@ -22,9 +23,10 @@ export default function LoginButton() {
           </button>
         </>
       ) : (
-        <Link href="/login" onClick={() => signIn()}>
-          Login
-        </Link>
+        <>
+          <Link href="/login">Login</Link>
+          <Link href="/signup">sign up</Link>
+        </>
       )}
     </>
   );

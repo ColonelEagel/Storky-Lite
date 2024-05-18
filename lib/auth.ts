@@ -1,6 +1,5 @@
-import { User } from "@/types/interface";
 import axios from "axios";
-import { NextAuthOptions,  getServerSession } from "next-auth";
+import { NextAuthOptions, getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 // declare module "next-auth" {
@@ -38,7 +37,7 @@ export const authOptions: NextAuthOptions = {
           }
 
           const res = await axios.post(
-            `${process.env.BACKEND_URL}/auth/login`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
             {
               email,
               password,
@@ -79,6 +78,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/login",
+    newUser:"/signup"
   },
 };
 export const getAuthSession = () => getServerSession(authOptions);

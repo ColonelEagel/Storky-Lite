@@ -16,18 +16,21 @@ import { useSession } from "next-auth/react";
 function SingleCourse({ params }: { params: { courseId: string } }) {
   const router = useRouter();
   const course = dummyCourses.find((course) => course.id === params.courseId);
-  const {data:session}=useSession()
-  console.log("*".repeat(20))
-  console.log(session)
+  const { data: session } = useSession();
+  console.log("*".repeat(20));
+  console.log(session);
   const isAdmin = true;
   return (
     <>
       {course ? (
         <div className="min-h-screen">
           <div className="flex items-center justify-between mt-10 p-4">
-            <Heading title={course.title} description={course.description} />
+            <Heading title={course.name} description={course.description} />
             {isAdmin && (
-              <Redirect url={`/courses/${params.courseId}/editSession/new`}className="black">
+              <Redirect
+                url={`/courses/${params.courseId}/editSession/new`}
+                className="black"
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Add New Session
               </Redirect>

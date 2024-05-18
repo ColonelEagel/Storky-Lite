@@ -1,10 +1,9 @@
 "use client";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "react-hot-toast";
-import axios from "axios";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,14 +17,14 @@ import {
 import { Input } from "@/components/ui/input";
 import HeaderComponent from "./ui/HeaderComponent";
 import { Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
+import usePostRequest from "@/app/actions/usePostRequest ";
 
 export type FormData = {
   name: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  passwordConfirm: string;
 };
 
 const formSchema = z
@@ -38,42 +37,46 @@ const formSchema = z
       .string()
       .min(8)
       .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/,
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[_!@#$%^&*])[a-zA-Z\d_!@#$%^&*]{8,}$/,
         {
           message:
             "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
         }
       ),
-    confirmPassword: z.string(),
+    passwordConfirm: z.string(),
   })
-  .refine((values) => values.password === values.confirmPassword, {
+  .refine((values) => values.password === values.passwordConfirm, {
     message: "Passwords must match!",
-    path: ["confirmPassword"],
+    path: ["passwordConfirm"],
   });
 
 type ProductFormValues = z.infer<typeof formSchema>;
 
 const SignUpForm: FC = () => {
-  const [loading, setLoading] = useState(false);
+  const { loading, postData } = usePostRequest();
+
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
+    defaultValues: { name: "", email: "", password: "", passwordConfirm: "" },
   });
 
+  // console.log(process.env);
   const onSubmit = async (data: FormData) => {
-    setLoading(true);
     try {
-      // Make a post request to nodemailer with axios
-      // const response = await axios.post("https://nodemailr.onrender.com/send", data, {
-      //   headers: { 'Content-Type': 'application/json' },
-      // });
-      // console.log("response: ", response.data);
-      // form.reset();
-      toast.success("Logged In successfully! Welcome back to Storky");
+      await postData({
+        url: `auth/signup`,
+        data: data,
+        onSuccess: () => {
+          toast.success("Logged In successfully! Welcome back to Storky");
+          form.reset();
+        },
+        onError: () => {
+          toast.error("Oops! Something went wrong. Please try again later.");
+        },
+      });
     } catch (error) {
       toast.error("Oops! Something went wrong. Please try again later.");
     }
-    setLoading(false);
   };
 
   return (
@@ -152,7 +155,7 @@ const SignUpForm: FC = () => {
             />
             <FormField
               control={form.control}
-              name="confirmPassword"
+              name="passwordConfirm"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
@@ -178,7 +181,7 @@ const SignUpForm: FC = () => {
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {" wait..."}
+                  {" wait... you are signing up"}
                 </>
               ) : (
                 "Sign Up"

@@ -33,28 +33,31 @@ const CourseGallery = () => {
   );
 
 
-  const handelUpdate = (sessionId: string) => {
+  const handelSessionUpdate = (sessionId: string) => {
     router.push(`/courses/${courseId}/editSession/${sessionId}`)
+  };
+  const handelContentUpdate = (sessionId: string) => {
+    router.push(`/courses/${courseId}/editSession/${sessionId}/editContent/new`)
   };
 
   return (
     <TabGroup
       as="div"
-      className="flex justify-between flex-col-reverse md:flex-row"
+      className="flex justify-between items-center flex-col-reverse md:flex-row"
     >
-      <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none p-14">
-        <TabList className="flex flex-col gap-6">
+      <div className="mx-auto mt-6 hidden max-w-2xl sm:block  p-14 flex-1">
+        <TabList className="flex flex-col gap-6 ">
           <Accordion type="single" collapsible>
             {sessionsData?.map((session, index) => {
               return (
                 <>
                   <AccordionItem value={`item-${index + 1}`} key={session.id} className="relative">
-                    <CellAction onUpdate={() => handelUpdate(session.id)} type="session" id={session.id} className="hover:cursor-pointer absolute right-[10px] top-3">
-                      <DropdownMenuItem onClick={() => handelUpdate(session.id)}><Plus className="mr-2 h-4 w-4" />Add content</DropdownMenuItem>
+                    <CellAction onUpdate={() => handelSessionUpdate(session.id)} type="session" id={session.id} className="hover:cursor-pointer absolute right-[10px] top-3">
+                      <DropdownMenuItem onClick={() => handelContentUpdate(session.id)}><Plus className="mr-2 h-4 w-4" />Add content</DropdownMenuItem>
                     </CellAction>
                     <AccordionTrigger>
                       <div className="flex justify-between items-center w-full">
-                        <p className="">{session.title}</p>
+                        <p className="">{session.name}</p>
                       </div>
                     </AccordionTrigger>
                     <RenderLessonContent
@@ -68,9 +71,9 @@ const CourseGallery = () => {
           </Accordion>
         </TabList>
       </div>
-      <TabPanels className="aspect-square h-96 w-10/12 relative  border-s-4">
+      <TabPanels className="aspect-square h-96  relative  border-s-4  flex-1">
         {contentData?.map((content) => (
-          <GalleryTab key={content.id} url={content.url.name} />
+          <GalleryTab key={content.id} url={content.filename} />
         ))}
       </TabPanels>
     </TabGroup>
