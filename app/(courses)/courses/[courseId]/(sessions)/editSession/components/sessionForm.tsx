@@ -22,7 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { Session } from "@/types/interface";
-import usePostRequest from "@/app/actions/usePostRequest ";
+import usePostRequest from "@/actions/usePostRequest ";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Title is required" }),

@@ -3,50 +3,21 @@ import { BookText, CircleUser, Presentation, School } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Heading from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import useGetRequest from "../actions/useGetRequest";
-import toast from "react-hot-toast";
-import { useState } from "react";
-import { useSession } from "next-auth/react";
 
-// import { formatter } from "@/lib/utils";
-// import { getTotalRevenue } from "@/actions/get-total-revenue";
-// import { getSalesCount } from "@/actions/get-sales-count";
-// import { getStockCount } from "@/actions/get-stock-count";
-// import Overview from "@/components/overview";
-// import { getGraphRevenue } from "@/actions/get-grapgh-revenue";
-
-// interface DashboardPageProps { params: { storeId: string } }
+import GetCourses from "../../actions/getCourses";
+import Loading from "./loading";
 
 const DashboardPage = () => {
-  // const totalRevenue = await getTotalRevenue(params.storeId)
-  // const salesCount = await getSalesCount(params.storeId)
-  // const stockCount = await getStockCount(params.storeId)
-  // const graphRevenue = await getGraphRevenue(params.storeId)
-  const { fetchData, loading } = useGetRequest();
-  // const { data: sessions, status } = useSession();
-  const [courseData, setCourseData] = useState([]);
+  const { courses, isLoading } = GetCourses();
 
-  const getData = async () => {
-    try {
-      await fetchData({
-        url: `/courses`,
-
-        onSuccess: (data: any) => {
-          setCourseData(data);
-        },
-        onError: () => {
-          toast.error("Oops! Something went wrong. Please try again later.");
-        },
-      });
-    } catch (error) {
-      toast.error("Oops! Something went wrong. Please try again later.");
-    }
-  };
-  console.log(courseData);
-  const TotalCourses = 5;
+  const TotalCourses = courses.length;
   const totalSessions = 5;
   const lessons = 5;
   const students = 5;
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex-col min-h-screen">

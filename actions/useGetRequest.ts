@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
 
@@ -13,11 +13,7 @@ const useGetRequest = <T>() => {
   const [isLoading, setIsLoading] = useState(false);
   const { data: session, status } = useSession();
 
-  const fetchData = async ({
-    url,
-    onSuccess,
-    onError,
-  }: RequestOptions<T>) => {
+  const fetchData = async ({ url, onSuccess, onError }: RequestOptions<T>) => {
     setIsLoading(true);
 
     try {
@@ -25,7 +21,7 @@ const useGetRequest = <T>() => {
         throw new Error("Session is not authenticated");
       }
 
-      const response = await axios.get<T>(
+      const response: AxiosResponse<{ data: T }> = await axios.get(
         `https://learning-platform-9wrh.onrender.com/${url}`,
         {
           headers: {
@@ -56,4 +52,3 @@ const useGetRequest = <T>() => {
 };
 
 export default useGetRequest;
-

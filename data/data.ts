@@ -70,7 +70,7 @@ export const contentData: Content[] = [
   {
     id: "1",
     sessionId: "1",
-    // name: "React Logo",
+    name: "React Logo",
     // url: {
     //   type: "image",
     //   name: "/409734957_908831464231117_6904991865240498873_n.jpg",
@@ -82,7 +82,7 @@ export const contentData: Content[] = [
   {
     id: "2",
     sessionId: "1",
-    // name: "React Intro Video",
+    name: "React Intro Video",
     // url: {
     //   type: "video",
     //   name: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
@@ -95,7 +95,7 @@ export const contentData: Content[] = [
   {
     id: "3",
     sessionId: "2",
-    // name: "State Management Diagram",
+    name: "State Management Diagram",
     // url: {
     //   type: "application/pdf",
     //   name: "https://www.soundczech.cz/temp/lorem-ipsum.pdf",
@@ -107,7 +107,7 @@ export const contentData: Content[] = [
   {
     id: "4",
     sessionId: "3",
-    // name: "express",
+    name: "express",
     // url: {
     //   type: "image",
     //   name: "/images.jpeg",

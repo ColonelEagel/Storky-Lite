@@ -35,13 +35,19 @@ export interface Content {
   //   lastModified?: number;
   //   lastModifiedDate?: Date;
   // }; //(image/video/pdf)
-  filename: FileList | undefined | string;
+  filename: File | undefined | string;
   name: string;
+  type?: string;
+  url?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface MediaDisplayProps {
+  url: string;
+  type: string;
+}
+export interface MediaDisplayComponentsProps {
   url: string;
 }
 

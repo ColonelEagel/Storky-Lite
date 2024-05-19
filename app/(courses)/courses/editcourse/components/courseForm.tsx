@@ -22,7 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { CourseData } from "@/types/interface";
-import usePostRequest from "@/app/actions/usePostRequest ";
+import usePostRequest from "@/actions/usePostRequest ";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 

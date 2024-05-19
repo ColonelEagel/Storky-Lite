@@ -10,7 +10,9 @@ function EditContent({ params }: { params: { contentId: string } }) {
       </div>
     );
   } else {
-    const content = contentData.find((content) => content.id === params.contentId);
+    const content = contentData.find(
+      (content) => content.id === params.contentId
+    );
     return (
       <div className="min-h-screen">
         {content ? <ContentForm initialData={content} /> : <NoResults />}

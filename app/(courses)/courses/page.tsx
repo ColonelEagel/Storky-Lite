@@ -1,77 +1,20 @@
 "use client";
-import useGetRequest from "@/app/actions/useGetRequest";
+
 import CourseCard from "@/components/ui/courseCard";
 import Heading from "@/components/ui/heading";
 import Redirect from "@/components/ui/redirect";
-import { CourseData } from "@/types/interface";
-import axios from "axios";
+
 import { Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+
 import Loading from "./loading";
+import GetCourses from "@/actions/getCourses";
 
 function CoursesPage({ params }: { params: { courseId: string } }) {
   const { data: session, status } = useSession();
-  const [courses, setCourses] = useState<CourseData[]>([]);
   const isAdmin = session?.user.user.role === "instructor";
-  const { fetchData, isLoading } = useGetRequest<CourseData[]>();
 
-  // useEffect(() => {
-  //   const fetchCourses = async () => {
-  //     try {
-  //       if (status === "loading") {
-  //         toast.error("Session is loading");
-  //         return;
-  //       }
-  //       if (status === "unauthenticated") {
-  //         throw new Error("Session is not authenticated");
-  //       }
-
-  //       console.log("Fetching courses...");
-  //       console.log("Session details:", session);
-
-  //       const response = await axios.get(
-  //         "https://learning-platform-9wrh.onrender.com/courses",
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${session?.user.token}`,
-  //           },
-  //         }
-  //       );
-
-  //       console.log("Response data:", response.data);
-  //       setCourses(response.data.data);
-  //     } catch (error: any) {
-  //       console.error("Failed to fetch courses:", error);
-
-  //       // Log error response if available
-  //       if (error.response) {
-  //         console.error("Error response data:", error.response.data);
-  //         console.error("Error response status:", error.response.status);
-  //         console.error("Error response headers:", error.response.headers);
-  //       }
-  //       toast.error("Failed to fetch courses. Please try again later.");
-  //     }
-  //   };
-
-  //   fetchCourses();
-  // }, [session, session?.user.token, status]);
-  useEffect(() => {
-    if (status === "authenticated" && session && session.user.token) {
-      fetchData({
-        url: "courses",
-        onSuccess: (data: CourseData[]) => setCourses(data),
-      }).catch((error) => {
-        console.error("Failed to fetch courses:", error);
-        toast.error("Failed to fetch courses. Please try again later.");
-      });
-    }
-  }, [status, session, session?.user.token]);
-
-  // useEffect(() => {
-  //   fetchCourses();
-  // }, [fetchCourses]);
+  const { courses, isLoading } = GetCourses();
   console.log("Courses:", courses);
 
   if (status === "loading" || isLoading) {

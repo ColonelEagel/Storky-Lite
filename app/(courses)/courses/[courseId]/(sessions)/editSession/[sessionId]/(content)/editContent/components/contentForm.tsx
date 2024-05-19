@@ -22,7 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { Content } from "@/types/interface";
-import usePostRequest from "@/app/actions/usePostRequest ";
+import usePostRequest from "@/actions/usePostRequest ";
 
 const formSchema = z.object({
   //   title: z.string().min(1, { message: "Title is required" }),
@@ -34,8 +34,14 @@ const formSchema = z.object({
   //     lastModifiedDate: z.date(),
   //   }),
   filename: z
-    .instanceof(FileList)
-    .refine((file) => file?.length == 1, "File is required."),
+    .instanceof(File)
+    .refine(
+      (file) =>
+        file.type.startsWith("image/") ||
+        file.type.startsWith("video/") ||
+        file.type == "application/pdf",
+      { message: "Only images, videos and pdf files are allowed" }
+    ),
   name: z.string().min(1, { message: "Name is required" }),
   // Add more fields as needed
 });
@@ -45,12 +51,7 @@ type ContentFormValue = z.infer<typeof formSchema>;
 interface ContentFormProps {
   initialData?: Content;
 }
-const transformToFormData = (content: Content): ContentFormValue => {
-  return {
-    filename: content.filename instanceof FileList ? content.filename : new DataTransfer().files,
-    name: content.name,
-  };
-};
+
 export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
@@ -60,8 +61,8 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
   const title = initialData ? "Edit the content" : "Create a content";
   const description = initialData ? "Edit the content" : "Add a new content";
   const toastMessage = initialData
-    ? "Course has been updated"
-    : "Course has been created";
+    ? "The Lesson has been updated"
+    : "The Lesson has been created";
   const action = initialData ? "Save changes" : "Create";
 
   // console.log("initialData", initialData);
@@ -69,19 +70,18 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
 
   const form = useForm<ContentFormValue>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData ? transformToFormData(initialData) : {
-      filename: new DataTransfer().files,
-      name: "",
-      //   title: "",
-      //   url: {
-      //     name: "",
-      //     size: 0,
-      //     type: "",
-      //     lastModified: 0,
-      //     lastModifiedDate: new Date(),
-      //   },
-      // Initialize more fields here
-    },
+    defaultValues: initialData
+      ? {
+          filename:
+            initialData.filename instanceof File
+              ? initialData.filename
+              : undefined, // Initialize filename with undefined if it's not a File
+          name: initialData.name,
+        }
+      : {
+          filename: undefined, // Initialize filename with undefined for new content
+          name: "",
+        },
   });
 
   const fileRef = form.register("filename");
@@ -90,9 +90,12 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
       await postData({
         url: `courses/${param.courseId}/sessions/${param.sessionId}/content`,
         data: data,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
         onSuccess: () => {
           toast.success(toastMessage);
-          router.push("/courses");
+          router.push(`/courses/${param.courseId}`);
         },
       });
     } catch (error) {
@@ -167,24 +170,22 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="filename"
             render={({ field: { value, onChange, ...fieldProps } }) => (
               <FormItem>
-                <FormLabel>Attache File</FormLabel>
+                <FormLabel>Content</FormLabel>
                 <FormControl>
                   <Input
-                    {...fileRef}
-                    placeholder="attach file"
-                    className="w-full rounded-sm dark:border-blue-50 border-1 outline-dashed outline-1 outline-blue-50"
+                    {...fieldProps}
+                    placeholder="filename"
                     type="file"
-                    accept="image/*, application/pdf , video/*"
-                    onChange={(event) => {
-                      console.log(event.target.files && event.target.files[0]);
-                      onChange(event.target.files && event.target.files[0]);
-                    }}
+                    accept="image/*, application/pdf"
+                    onChange={(event) =>
+                      onChange(event.target.files && event.target.files[0])
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -193,7 +194,7 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
           />
           {/* Add more form fields as needed */}
           <Button disabled={loading} className="ml-auto" type="submit">
-            {action}
+            {loading ? "uploading..." : action}
           </Button>
         </form>
       </Form>
