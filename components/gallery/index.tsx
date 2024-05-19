@@ -63,9 +63,9 @@ const CourseGallery = () => {
   return (
     <TabGroup
       as="div"
-      className="flex justify-between items-center flex-col-reverse md:flex-row"
+      className="flex gap-4 items-center justify-center flex-col-reverse md:flex-row p-14"
     >
-      <div className="mx-auto mt-6 hidden max-w-2xl sm:block  p-14 flex-1">
+      <div className="mx-auto mt-6  min-w-[250px] max-w-2xl sm:block  md:p-14 flex-1">
         <TabList className="flex flex-col gap-6 ">
           <Accordion type="single" collapsible>
             {sessionsData &&
@@ -107,7 +107,7 @@ const CourseGallery = () => {
           </Accordion>
         </TabList>
       </div>
-      <TabPanels className="aspect-square h-96  relative  border-s-4  flex-1">
+      <TabPanels className="aspect-square h-96  relative  border-s-4  flex-1 max-w-2xl">
         {sessionsData?.map((content) => (
           <ContentProvider
             key={content.id}

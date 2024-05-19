@@ -1,17 +1,25 @@
 "use client";
 
-import { Plus } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import Heading from "@/components/ui/heading";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+
+import GetCourses from "@/actions/getCourses";
+
+import { Separator } from "@/components/ui/separator";
+import { Plus, SquareUser } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+import Heading from "@/components/ui/heading";
 import NoResults from "@/components/ui/no-results";
 import CourseGallery from "@/components/gallery";
 import Redirect from "@/components/ui/redirect";
-import { useSession } from "next-auth/react";
-import GetCourses from "@/actions/getCourses";
+
 import Loading from "../loading";
-import { useEffect, useState } from "react";
-import { CourseData } from "@/types/interface";
 
 /**
  * SingleCourse is a functional component that renders a single course based on the courseId parameter.
@@ -21,60 +29,86 @@ import { CourseData } from "@/types/interface";
  * @returns {JSX.Element} The rendered course component.
  */
 function SingleCourse({ params }: { params: { courseId: string } }) {
+  // Get the router instance
   const router = useRouter();
+
+  // Get the session data and status
   const { data: session, status } = useSession();
+
+  // Get the courses data and loading status
   const { courses, isLoading } = GetCourses();
-  // const [singleCourse, setSingleCourse] = useState<CourseData | undefined>();
 
-  // useEffect(() => {
-  //   if (courses) {
-      console.log("Fetched courses:", courses);
-  //     console.log("Course ID from params:", params.courseId);
-  //     const courseIdNumber = Number(params.courseId);
-  //     const foundCourse = courses.find(
-  //       (course) => +course.id === courseIdNumber
-  //     );
-  //     console.log("Found course:", foundCourse);
-  //     setSingleCourse(foundCourse);
-  //   }
-  // }, [courses, params.courseId]);
+  // Convert the courseId parameter to a number
   const courseIdNumber = Number(params.courseId);
-  const foundCourse = courses.find(
-    (course) => +course.id === courseIdNumber
-  );
 
+  // Find the course with the matching ID
+  const foundCourse = courses.find((course) => +course.id === courseIdNumber);
+
+  // If loading or fetching session data, show loading spinner
   if (status === "loading" || isLoading) {
     return <Loading />;
   }
 
+  // If not authenticated, redirect to login page
   if (status === "unauthenticated") {
-    router.push("/login"); // Redirect to login if unauthenticated
+    router.push("/login");
     return null;
   }
 
+  // Render the course component
   return (
     <>
+      {/* If course is found, render the course details */}
       {foundCourse ? (
         <div className="min-h-screen">
           <div className="flex items-center justify-between mt-10 p-4">
+            {/* Render the course heading */}
             <Heading
               title={foundCourse.name}
               description={foundCourse.description}
             />
+            {/* If user is an instructor, render the add session button */}
             {session?.user.user.role === "instructor" && (
-              <Redirect
-                url={`/courses/${params.courseId}/editSession/new`}
-                className="black"
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                Add New Session
-              </Redirect>
+              <div className="flex gap-2">
+                <TooltipProvider delayDuration={300}>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Redirect
+                        url={`/courses/${params.courseId}/editSession/new`}
+                        className="black"
+                      >
+                        <Plus size={15} />
+                      </Redirect>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p> Add New Session</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <TooltipProvider delayDuration={300}>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Redirect
+                        url={`/courses/${params.courseId}/students`}
+                        className="black"
+                      >
+                        <SquareUser size={15} />
+                      </Redirect>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p> invite student</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
             )}
           </div>
           <Separator className="my-4" />
+          {/* Render the course gallery */}
           <CourseGallery />
         </div>
       ) : (
+        // {/* If course is not found, render the no results component */}
         <NoResults />
       )}
     </>

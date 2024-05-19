@@ -37,8 +37,8 @@ export interface Content {
   // }; //(image/video/pdf)
   filename: File | undefined | string;
   name: string;
-  type?: string;
-  url?: string;
+  type: string;
+  url: string;
   createdAt: Date;
   updatedAt: Date;
 }
