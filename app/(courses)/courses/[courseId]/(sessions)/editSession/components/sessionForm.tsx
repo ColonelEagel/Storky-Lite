@@ -22,7 +22,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { Session } from "@/types/interface";
-import usePostRequest from "@/actions/usePostRequest ";
+import usePostRequest from "@/actions/usePostRequest";
+import useDeleteRequest from "@/actions/useDeleteRequest";
+import usePutRequest from "@/actions/usePutRequest";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Title is required" }),
@@ -45,9 +47,11 @@ interface SessionFormProps {
 
 export const SessionForm: React.FC<SessionFormProps> = ({ initialData }) => {
   const [open, setOpen] = useState(false);
-  //   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { postData, loading } = usePostRequest();
+  const { deleteData, isLoading: isDeleting } = useDeleteRequest();
+  const { loading: patchLoading, putData } = usePutRequest();
+
   const { courseId } = useParams();
 
   const name = initialData ? "Edit the session" : "Create a session";
@@ -66,41 +70,58 @@ export const SessionForm: React.FC<SessionFormProps> = ({ initialData }) => {
       // Initialize more fields here
     },
   });
-
+  console.log(courseId);
+  /**
+   * Handles form submission.
+   * If initialData exists, sends a PATCH request to update the session.
+   * Otherwise, sends a POST request to create a new session.
+   * @param {SessionFormValue} data - The form data to be sent in the request.
+   */
   const onSubmit = async (data: SessionFormValue) => {
     try {
-      await postData({
-        url: `courses/${courseId}/sessions`,
-        data: data,
-        onSuccess: () => {
-          toast.success(toastMessage);
-          router.push("/courses");
-        },
-      });
+      if (initialData) {
+        await putData({
+          url: `courses/${courseId}/sessions/${initialData?.id}`,
+          data: data,
+          onSuccess: () => {
+            toast.success(toastMessage);
+            router.push(`/courses/${courseId}`);
+          },
+        });
+      } else {
+        await postData({
+          url: `courses/courseId/sessions`,
+          data: data,
+          onSuccess: () => {
+            toast.success(toastMessage);
+            router.push(`/courses/${courseId}`);
+          },
+        });
+      }
     } catch (error) {
       toast.error("Oops! Something went wrong. Please try again later.");
     }
   };
-
   const onDelete = async () => {
     try {
-      //   setLoading(true);
-      // Implement your API call here to delete the session
-      // Example: await axios.delete(`/api/sessions/${initialData.id}`);
-
-      console.log(
-        `${initialData?.name} Session has been deleted successfully.`
-      );
-      toast.success(
-        `${initialData?.name} Session has been deleted successfully.`
-      );
-      // router.push("/sessions"); // Redirect to the sessions page after deletion
+      await deleteData({
+        url: `courses/${courseId}/sessions/${initialData?.id}`,
+        onSuccess: () => {
+          toast.success("session has been deleted successfully");
+          router.push(`courses`);
+        },
+        onError: (error: any) => {
+          toast.error(
+            "something went wrong Error deleting course please try again"
+          );
+          console.log("error", error);
+        },
+      });
     } catch (error) {
       console.error("Error:", error);
       toast.error("Make sure you remove all session dependencies first");
     } finally {
       setOpen(false);
-      //   setLoading(false);
     }
   };
 

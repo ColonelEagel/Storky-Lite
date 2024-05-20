@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import useGetRequest from "./useGetRequest";
 import toast from "react-hot-toast";
 
-export default function GetCourses() {
+export default function useGetCourses() {
   const { data: session, status } = useSession();
   const [courses, setCourses] = useState<CourseData[]>([]);
   const { fetchData, isLoading } = useGetRequest<CourseData[]>();
@@ -19,6 +19,7 @@ export default function GetCourses() {
         toast.error("Failed to fetch courses. Please try again later.");
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, session, session?.user.token]);
 
   return {

@@ -4,17 +4,11 @@ import { CourseForm } from "../components/courseForm";
 import { dummyCourses } from "@/data/data";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import GetCourses from "@/actions/getCourses";
+import GetCourses from "@/actions/useGetCourses";
 
 function EditCourse({ params }: { params: { courseId: string } }) {
-  const { data: session } = useSession();
-  const {courses,isLoading}=GetCourses();
+  const { courses, isLoading } = GetCourses();
   const router = useRouter();
-
-  const isAdmin = session?.user.user.role === "instructor";
-  console.log(typeof  params.courseId)
-
-  if (!isAdmin) router.push("/");
 
   if (params.courseId === "new") {
     return (

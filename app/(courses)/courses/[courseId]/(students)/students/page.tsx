@@ -7,25 +7,13 @@ import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import Loading from "./loading";
 import { useRouter } from "next/navigation";
+import useGetAllStudents from "@/actions/useGetAllStudents";
+import { Loader } from "@/components/ui/loader";
 
-const StudentsPage = ({ params }: { params: { storeId: string } }) => {
-  const { fetchData, isLoading } = useGetRequest();
-  const [students, setStudents] = useState<StudentColumn[]>([]);
-  const { data: session, status } = useSession();
+const StudentsPage = () => {
+  const { students, isLoading } = useGetAllStudents();
 
-  useEffect(() => {
-    if (status === "authenticated" && session && session.user.token) {
-      fetchData({
-        url: `user`,
-        onSuccess: (data) => setStudents(data as StudentColumn[]),
-      }).catch((error) => {
-        console.error("Failed to fetch Content:", error);
-        toast.error("Failed to fetch Content. Please try again later.");
-      });
-    }
-  }, [status, session, session?.user.token]);
-
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loader/>;
   return (
     <>
       <div className="flex-col min-h-screen">

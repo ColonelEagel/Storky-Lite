@@ -8,7 +8,7 @@ import { Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 import Loading from "./loading";
-import GetCourses from "@/actions/getCourses";
+import GetCourses from "@/actions/useGetCourses";
 
 function CoursesPage({ params }: { params: { courseId: string } }) {
   const { data: session, status } = useSession();

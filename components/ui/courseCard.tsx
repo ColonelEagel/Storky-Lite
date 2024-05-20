@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import CellAction from "./cell-action";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import useDeleteRequest from "@/actions/useDeleteREquest";
+import useDeleteRequest from "@/actions/useDeleteRequest";
 import toast from "react-hot-toast";
 
 /**

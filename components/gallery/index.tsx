@@ -17,11 +17,11 @@ import {
 } from "@/components/ui/accordion";
 import CellAction from "../ui/cell-action";
 import { Plus } from "lucide-react";
-import GetSessions from "@/actions/getSessions";
+import useGetSessions from "@/actions/useGetSessions";
 
 import ContentProvider from "@/provider/contentProvider";
 import { useSession } from "next-auth/react";
-import useDeleteRequest from "@/actions/useDeleteREquest";
+import useDeleteRequest from "@/actions/useDeleteRequest";
 import toast from "react-hot-toast";
 import { Loader } from "../ui/loader";
 import NoResults from "../ui/no-results";
@@ -30,7 +30,7 @@ const CourseGallery = () => {
   const { courseId } = useParams();
   const courseIdString = courseId.toString();
   const router = useRouter();
-  const { sessions, isLoading } = GetSessions(courseIdString);
+  const { sessions, isLoading } = useGetSessions(courseIdString);
   const { data: session } = useSession();
   const { deleteData, isLoading: isDeleting } = useDeleteRequest();
 
@@ -60,7 +60,7 @@ const CourseGallery = () => {
       url: `courses/${courseId}/sessions/${sessionId}`,
       onSuccess: () => {
         toast.success("Course deleted successfully");
-        router.push( `courses/${courseId}`);
+        router.push(`courses/${courseId}`);
       },
       onError: (error: any) => {
         toast.error(

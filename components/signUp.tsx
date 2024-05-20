@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import HeaderComponent from "./ui/HeaderComponent";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import usePostRequest from "@/actions/usePostRequest ";
+import usePostRequest from "@/actions/usePostRequest";
 
 export type FormData = {
   name: string;

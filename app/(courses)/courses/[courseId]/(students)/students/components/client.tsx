@@ -25,7 +25,7 @@ const StudentClient: React.FC<StudentClientProps> = ({ data }) => {
           title={`students (${data.length})`}
           description="Manage students for this course."
         />
-        <Button onClick={() => router.push(`/courses/${params.courseId}/students/new`)}>
+        <Button onClick={() => router.push(`/courses/${params.courseId}/students/invitestudent`)}>
           <Plus className="mr-2 h-4 w-4" />
           invite new student
         </Button>

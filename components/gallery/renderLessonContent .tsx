@@ -7,9 +7,9 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import CellAction from "../ui/cell-action";
 import { redirect, useParams, useRouter } from "next/navigation";
-import GetContent from "@/actions/getContent";
+import GetContent from "@/actions/useGetContent";
 import { useSession } from "next-auth/react";
-import useDeleteRequest from "@/actions/useDeleteREquest";
+import useDeleteRequest from "@/actions/useDeleteRequest";
 import toast from "react-hot-toast";
 import NoResults from "../ui/no-results";
 
@@ -26,7 +26,6 @@ const RenderLessonContent: React.FC<renderLessonContentProps> = ({
 }) => {
   const { content } = GetContent({ courseId, sessionId });
   const router = useRouter();
-  const params = useParams();
   const { data: session } = useSession();
   const { deleteData, isLoading } = useDeleteRequest();
   console.log("sessionId", sessionId);
@@ -53,7 +52,7 @@ const RenderLessonContent: React.FC<renderLessonContentProps> = ({
       `/courses/${courseId}/editSession/${sessionId}/editContent/${id}`
     );
   };
-
+console.log("content",content)
   return (
     <>
       {content?.length > 0 ? (
@@ -66,7 +65,6 @@ const RenderLessonContent: React.FC<renderLessonContentProps> = ({
                     key={item.id}
                     className="my-5 pl-5 relative"
                   >
-                    (
                     <>
                       <p
                         className={cn(
@@ -91,7 +89,7 @@ const RenderLessonContent: React.FC<renderLessonContentProps> = ({
                         />
                       )}
                     </>
-                    )
+
                     <Separator />
                   </AccordionContent>
                 </>

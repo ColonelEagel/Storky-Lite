@@ -5,10 +5,11 @@ import { useEffect, useState } from "react";
 import useGetRequest from "./useGetRequest";
 import toast from "react-hot-toast";
 
-export default function GetSessions(courseId: string) {
+export default function useGetSessions(courseId: string) {
   const { data: session, status } = useSession();
   const [sessions, setSessions] = useState<Session[]>([]);
-  const { fetchData, isLoading } = useGetRequest<CourseData[]>();
+  const { fetchData, isLoading } = useGetRequest<Session[]>();
+
   useEffect(() => {
     if (status === "authenticated" && session && session.user.token) {
       fetchData({
@@ -19,10 +20,8 @@ export default function GetSessions(courseId: string) {
         toast.error("Failed to fetch sessions. Please try again later.");
       });
     }
-  }, [status, session, session?.user.token]);
-
-  return {
-    sessions,
-    isLoading,
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, session, courseId]);
+console.log("sessions",sessions)
+  return { sessions, isLoading };
 }

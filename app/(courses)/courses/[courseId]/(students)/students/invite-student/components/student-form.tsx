@@ -22,7 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import usePostRequest from "@/actions/usePostRequest ";
+import usePostRequest from "@/actions/usePostRequest";
 
 /**
  * Defines the schema for the form data.

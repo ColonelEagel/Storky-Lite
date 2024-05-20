@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-import GetCourses from "@/actions/getCourses";
+import useGetCourses from "@/actions/useGetCourses";
 
 import { Separator } from "@/components/ui/separator";
 import { Plus, SquareUser } from "lucide-react";
@@ -37,7 +37,7 @@ function SingleCourse({ params }: { params: { courseId: string } }) {
 
   const isAdmin = session?.user.user.role === "instructor";
   // Get the courses data and loading status
-  const { courses, isLoading } = GetCourses();
+  const { courses, isLoading } = useGetCourses();
 
   // Convert the courseId parameter to a number
   const courseIdNumber = Number(params.courseId);

@@ -22,9 +22,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { CourseData } from "@/types/interface";
-import usePostRequest from "@/actions/usePostRequest ";
-import axios from "axios";
-import { useSession } from "next-auth/react";
+import usePostRequest from "@/actions/usePostRequest";
+
+import useDeleteRequest from "@/actions/useDeleteRequest";
+import usePutRequest from "@/actions/usePutRequest";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Title is required" }),
@@ -45,7 +46,8 @@ export const CourseForm: React.FC<CourseFormProps> = ({ initialData }) => {
   //   const [loading, setLoading] = useState(false);
   //   const { data: session } = useSession();
   const { postData, loading } = usePostRequest();
-
+  const { loading: patchLoading, putData } = usePutRequest();
+  const { deleteData, isLoading: isDeleting } = useDeleteRequest();
   const title = initialData ? "Edit the course" : "Create a course";
   const description = initialData ? "Edit the course" : "Add a new course";
   const toastMessage = initialData
@@ -62,59 +64,45 @@ export const CourseForm: React.FC<CourseFormProps> = ({ initialData }) => {
     },
   });
   const onSubmit = async (data: CourseFormValue) => {
-    // setLoading(true);
-    // try {
-    //   await axios
-    //     .post("", data, {
-    //       headers: {
-    //         Authorization: `Bearer ${session?.user.token}`,
-    //       },
-    //     })
-    //     .then((response) => {
-    //       console.log("response", response);
-    //     });
-
-    //   setLoading(false);
-    //   toast.success(toastMessage);
-    // } catch (error) {
-    //   setLoading(false);
-
-    //   toast("Oops! Something went wrong. Please try again later.");
-
-    //   throw error;
-    // } finally {
-    //   setLoading(false);
-    // }
     try {
-      await postData({
-        url: `courses`,
-        data: data,
-        onSuccess: () => {
-          toast.success(toastMessage);
-          router.push("/courses");
-        },
-      });
+      if (initialData) {
+        await putData({
+          url: `courses/${initialData?.id}`,
+          data: data,
+          onSuccess: () => {
+            toast.success(toastMessage);
+            router.push("/courses");
+          },
+        });
+      } else {
+        await postData({
+          url: `courses`,
+          data: data,
+          onSuccess: () => {
+            toast.success(toastMessage);
+            router.push("/courses");
+          },
+        });
+      }
     } catch (error) {
       toast.error("Oops! Something went wrong. Please try again later.");
     }
   };
 
   const onDelete = async () => {
-    try {
-      // Implement your API call here to delete the course
-      // Example: await axios.delete(`/api/courses/${initialData.id}`);
-
-      console.log(`${initialData?.name} Course has been deleted successfully.`);
-      toast.success(
-        `${initialData?.name} Course has been deleted successfully.`
-      );
-      // router.push("/courses"); // Redirect to the courses page after deletion
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error("Make sure you remove all course dependencies first");
-    } finally {
-      setOpen(false);
-    }
+    deleteData({
+      url: `courses/${initialData?.id}`,
+      onSuccess: () => {
+        toast.success("Course has been deleted successfully");
+        router.push(`courses`);
+      },
+      onError: (error: any) => {
+        toast.error(
+          "something went wrong Error deleting course please try again"
+        );
+        console.log("error", error);
+      },
+    });
   };
 
   return (
@@ -181,7 +169,6 @@ export const CourseForm: React.FC<CourseFormProps> = ({ initialData }) => {
               </FormItem>
             )}
           />
-          {/* Add more form fields as needed */}
           <Button disabled={loading} className="ml-auto" type="submit">
             {action}
           </Button>

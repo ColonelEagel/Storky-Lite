@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Content, Session } from "@/types/interface";
 import { useSession } from "next-auth/react";
-import GetContent from "@/actions/getContent";
+import useGetContent from "@/actions/useGetContent";
 import GalleryTab from "@/components/gallery/gallery-tab";
 
 interface GetContentProps {
@@ -12,9 +12,7 @@ export default function ContentProvider({
   courseId,
   sessionId,
 }: GetContentProps) {
-  const { data: session, status } = useSession();
-  //   const [content, setContent] = useState<Content[]>([]);
-  const { content, isLoading } = GetContent({ courseId, sessionId });
+  const { content } = useGetContent({ courseId, sessionId });
 
   return (
     <>

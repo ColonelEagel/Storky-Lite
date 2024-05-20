@@ -22,7 +22,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { Content } from "@/types/interface";
-import usePostRequest from "@/actions/usePostRequest ";
+import usePostRequest from "@/actions/usePostRequest";
+import usePutRequest from "@/actions/usePutRequest";
+import useDeleteRequest from "@/actions/useDeleteRequest";
 
 const formSchema = z.object({
   //   title: z.string().min(1, { message: "Title is required" }),
@@ -56,7 +58,9 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const { postData, loading } = usePostRequest();
-  const param = useParams();
+  const { deleteData, isLoading: isDeleting } = useDeleteRequest();
+  const { loading: patchLoading, putData } = usePutRequest();
+  const { courseId, sessionId } = useParams();
 
   const title = initialData ? "Edit the content" : "Create a content";
   const description = initialData ? "Edit the content" : "Add a new content";
@@ -64,9 +68,6 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
     ? "The Lesson has been updated"
     : "The Lesson has been created";
   const action = initialData ? "Save changes" : "Create";
-
-  // console.log("initialData", initialData);
-  console.log(param);
 
   const form = useForm<ContentFormValue>({
     resolver: zodResolver(formSchema),
@@ -84,55 +85,66 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
         },
   });
 
-  const fileRef = form.register("filename");
   const onSubmit = async (data: ContentFormValue) => {
+    console.log(data)
     try {
-      await postData({
-        url: `courses/${param.courseId}/sessions/${param.sessionId}/content`,
-        data: data,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        onSuccess: () => {
-          toast.success(toastMessage);
-          router.push(`/courses/${param.courseId}`);
-        },
-      });
+      if (initialData) {
+        await putData({
+          url: `courses/${courseId}/sessions/${sessionId}/content/${initialData.id}`,
+          data: data,
+          onSuccess: () => {
+            toast.success(toastMessage);
+            router.push("/courses");
+          },
+        });
+      } else {
+        await postData({
+          url: `courses/${courseId}/sessions/${sessionId}/content`,
+          data: data,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onSuccess: () => {
+            toast.success(toastMessage);
+            router.push(`/courses/${courseId}`);
+          },
+        });
+      }
     } catch (error) {
       toast.error("Oops! Something went wrong. Please try again later.");
     }
   };
-
-  //   const onDelete = async () => {
-  //     try {
-
-  //       // Implement your API call here to delete the content
-  //       // Example: await axios.delete(`/api/contents/${initialData.id}`);
-
-  //       console.log(
-  //         `${initialData?.title} Course has been deleted successfully.`
-  //       );
-  //       toast.success(
-  //         `${initialData?.title} Course has been deleted successfully.`
-  //       );
-  //       // router.push("/contents"); // Redirect to the contents page after deletion
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //       toast.error("Make sure you remove all content dependencies first");
-  //     } finally {
-  //       setOpen(false);
-
-  //     }
-  //   };
+  const onDelete = async () => {
+    try {
+      await deleteData({
+        url: `courses/${courseId}/sessions/${sessionId}/content/${initialData?.id}`,
+        onSuccess: () => {
+          toast.success("session has been deleted successfully");
+          router.push(`courses`);
+        },
+        onError: (error: any) => {
+          toast.error(
+            "something went wrong Error deleting course please try again"
+          );
+          console.log("error", error);
+        },
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Make sure you remove all session dependencies first");
+    } finally {
+      setOpen(false);
+    }
+  };
 
   return (
     <div className="w-4/6 h-fit mt-10 mx-auto">
-      {/* <AlertModal
+      <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onDelete}
         loading={loading}
-      /> */}
+      />
       <div className="flex items-center justify-between">
         <Heading title={title} description={description} />
         {initialData && (

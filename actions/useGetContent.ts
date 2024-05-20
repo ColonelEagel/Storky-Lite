@@ -9,7 +9,10 @@ interface GetContentProps {
   courseId: string;
   sessionId: string;
 }
-export default function GetContent({ courseId, sessionId }: GetContentProps) {
+export default function useGetContent({
+  courseId,
+  sessionId,
+}: GetContentProps) {
   const { data: session, status } = useSession();
   const [content, setCourses] = useState<Content[]>([]);
   const { fetchData, isLoading } = useGetRequest<Content[]>();
@@ -23,7 +26,8 @@ export default function GetContent({ courseId, sessionId }: GetContentProps) {
         toast.error("Failed to fetch Content. Please try again later.");
       });
     }
-  }, [status, session, session?.user.token]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, session, session?.user.token, courseId, sessionId]);
 
   return {
     content,
