@@ -8,28 +8,26 @@ import { cn } from "@/lib/utils";
 import CellAction from "../ui/cell-action";
 import { redirect, useParams, useRouter } from "next/navigation";
 import GetContent from "@/actions/getContent";
+import { useSession } from "next-auth/react";
 
 interface renderLessonContentProps {
   sessionId: string;
   courseId: string;
-  lessonsData: Content[];
   ClassName?: string;
 }
 
 const RenderLessonContent: React.FC<renderLessonContentProps> = ({
   sessionId,
-  lessonsData,
   courseId,
   ClassName,
 }) => {
-  const { content, isLoading } = GetContent({ courseId, sessionId });
-
-  const contentData: Content[] = lessonsData.filter((lesson) => {
-    return lesson.sessionId === sessionId;
-  });
+  const { content } = GetContent({ courseId, sessionId });
   const router = useRouter();
   const params = useParams();
-  console.log("params", params);
+  const { data: session } = useSession();
+
+  const isAdmin = session?.user.user.role === "instructor";
+
   const handleUpdate = (id: string) => {
     console.log("Update content", id);
     router.push(
@@ -57,12 +55,14 @@ const RenderLessonContent: React.FC<renderLessonContentProps> = ({
                   >
                     {item.name}
                   </p>
-                  <CellAction
-                    onUpdate={() => handleUpdate(item.id)}
-                    type="session"
-                    id={item.id}
-                    className="hover:cursor-pointer absolute right-[10px] top-1/2 -translate-y-1/2"
-                  ></CellAction>
+                  {isAdmin && (
+                    <CellAction
+                      onUpdate={() => handleUpdate(item.id)}
+                      type="session"
+                      id={item.id}
+                      className="hover:cursor-pointer absolute right-[10px] top-1/2 -translate-y-1/2"
+                    ></CellAction>
+                  )}
                   <Separator />
                 </AccordionContent>
               </>

@@ -19,7 +19,10 @@ interface RootLayoutProps {
   session: any;
 }
 
-export default function RootLayout({ children, session }: RootLayoutProps): JSX.Element {
+export default function RootLayout({
+  children,
+  session,
+}: RootLayoutProps): JSX.Element {
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -31,8 +34,10 @@ export default function RootLayout({ children, session }: RootLayoutProps): JSX.
             disableTransitionOnChange
           >
             <ToastProvider />
-            <Navbar />
-            {children}
+            <div className="min-h-screen">
+              <Navbar />
+              {children}
+            </div>
             <Footer />
           </ThemeProvider>
         </AuthProvider>

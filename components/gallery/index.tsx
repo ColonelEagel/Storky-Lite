@@ -7,7 +7,7 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import GalleryTab from "./gallery-tab";
 import { useParams, useRouter } from "next/navigation";
 import RenderLessonContent from "./renderLessonContent ";
-import { contentData, sessions } from "@/data/data";
+
 import { Session } from "@/types/interface";
 
 import {
@@ -18,20 +18,25 @@ import {
 import CellAction from "../ui/cell-action";
 import { Plus } from "lucide-react";
 import GetSessions from "@/actions/getSessions";
-import GetContent from "@/actions/getContent";
+
 import ContentProvider from "@/provider/contentProvider";
+import { useSession } from "next-auth/react";
 
 const CourseGallery = () => {
   const courseId = useParams().courseId?.toString();
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
   const { sessions, isLoading } = GetSessions(courseId);
+  const { data: session } = useSession();
   useEffect(() => {
     setIsMounted(true);
   }, []);
   if (!isMounted) {
     return null;
   }
+
+  const isAdmin = session?.user.user.role === "instructor";
+
   console.log("sessions", sessions);
   const courseIdNumber = Number(courseId);
   const sessionsData: Session[] = sessions?.filter(
@@ -77,19 +82,21 @@ const CourseGallery = () => {
                       key={session.id}
                       className="relative"
                     >
-                      <CellAction
-                        onUpdate={() => handelSessionUpdate(session.id)}
-                        type="session"
-                        id={session.id}
-                        className="hover:cursor-pointer absolute right-[10px] top-3"
-                      >
-                        <DropdownMenuItem
-                          onClick={() => handelContentUpdate(session.id)}
+                      {isAdmin && (
+                        <CellAction
+                          onUpdate={() => handelSessionUpdate(session.id)}
+                          type="session"
+                          id={session.id}
+                          className="hover:cursor-pointer absolute right-[10px] top-3"
                         >
-                          <Plus className="mr-2 h-4 w-4" />
-                          Add content
-                        </DropdownMenuItem>
-                      </CellAction>
+                          <DropdownMenuItem
+                            onClick={() => handelContentUpdate(session.id)}
+                          >
+                            <Plus className="mr-2 h-4 w-4" />
+                            Add content
+                          </DropdownMenuItem>
+                        </CellAction>
+                      )}
                       <AccordionTrigger>
                         <div className="flex justify-between items-center w-full">
                           <p className="">{session.name}</p>
@@ -98,7 +105,6 @@ const CourseGallery = () => {
                       <RenderLessonContent
                         sessionId={session.id}
                         courseId={courseId}
-                        lessonsData={contentData}
                       />
                     </AccordionItem>
                   </>

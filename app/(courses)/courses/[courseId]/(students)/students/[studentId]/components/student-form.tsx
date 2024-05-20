@@ -44,7 +44,6 @@ const StudentForm = () => {
   // Get the course ID from the URL parameters
   const params = useParams();
   // Get the router object
-  const router = useRouter();
 
   // Define the form variables
   const title = "invite student";

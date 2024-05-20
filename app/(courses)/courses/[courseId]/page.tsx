@@ -35,6 +35,7 @@ function SingleCourse({ params }: { params: { courseId: string } }) {
   // Get the session data and status
   const { data: session, status } = useSession();
 
+  const isAdmin = session?.user.user.role === "instructor";
   // Get the courses data and loading status
   const { courses, isLoading } = GetCourses();
 
@@ -44,15 +45,14 @@ function SingleCourse({ params }: { params: { courseId: string } }) {
   // Find the course with the matching ID
   const foundCourse = courses.find((course) => +course.id === courseIdNumber);
 
-  // If loading or fetching session data, show loading spinner
-  if (status === "loading" || isLoading) {
-    return <Loading />;
-  }
-
   // If not authenticated, redirect to login page
   if (status === "unauthenticated") {
     router.push("/login");
     return null;
+  }
+  // If loading or fetching session data, show loading spinner
+  if (status === "loading" || isLoading) {
+    return <Loading />;
   }
 
   // Render the course component
@@ -68,7 +68,7 @@ function SingleCourse({ params }: { params: { courseId: string } }) {
               description={foundCourse.description}
             />
             {/* If user is an instructor, render the add session button */}
-            {session?.user.user.role === "instructor" && (
+            {isAdmin && (
               <div className="flex gap-2">
                 <TooltipProvider delayDuration={300}>
                   <Tooltip>

@@ -1,8 +1,6 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
 
-import { CourseData, Session } from "@/interface/interface";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,17 +9,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import {
-  Copy,
-  Edit,
-  EllipsisVertical,
-  MoreHorizontal,
-  Trash,
-} from "lucide-react";
+import { Copy, Edit, EllipsisVertical, Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { useState } from "react";
-import axios from "axios";
 
 interface CellActionProps {
   id: string;
@@ -29,6 +20,8 @@ interface CellActionProps {
   type: string;
   children?: React.ReactNode;
   onUpdate?: () => void;
+  onDelete: () => void;
+  loading: boolean;
 }
 
 const CellAction: React.FC<CellActionProps> = ({
@@ -37,12 +30,10 @@ const CellAction: React.FC<CellActionProps> = ({
   type,
   children,
   onUpdate,
+  onDelete,
+  loading,
 }) => {
-  const router = useRouter();
-  const params = useParams();
-
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   // const onUpdate = () => {
   //     if (type === "course") {
@@ -55,37 +46,39 @@ const CellAction: React.FC<CellActionProps> = ({
     navigator.clipboard.writeText(id);
     toast.success(`${type} ID copied to the clipboard.`);
   };
-  const onDelete = async () => {
-    if (id) {
-      try {
-        setLoading(true);
-        // await axios.delete(`/api/courses${params.courseId}/${type}s/${data.id}`)
+  // const onDelete = async () => {
+  //   if (id) {
+  //     try {
+  //       setLoading(true);
+  //       // await axios.delete(`/api/courses${params.courseId}/${type}s/${data.id}`)
 
-        // console.log(data)
-        router.refresh();
-        console.log(params);
-        toast.success(`The ${type} has been deleted successfully.`);
-      } catch (error) {
-        toast.error(
-          "Something went wrong while deleting the Course, try again later."
-        );
-      } finally {
-        setOpen(false);
-        setLoading(false);
-      }
-    } else {
-      console.error("data.id is null or undefined");
-    }
-  };
+  //       // console.log(data)
+  //       router.refresh();
+  //       console.log(params);
+  //       toast.success(`The ${type} has been deleted successfully.`);
+  //     } catch (error) {
+  //       toast.error(
+  //         "Something went wrong while deleting the Course, try again later."
+  //       );
+  //     } finally {
+  //       setOpen(false);
+  //       setLoading(false);
+  //     }
+  //   } else {
+  //     console.error("data.id is null or undefined");
+  //   }
+  // };
   // console.log(typeof data)
   return (
     <div className={className}>
-      <AlertModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        onConfirm={onDelete}
-        loading={loading}
-      />
+      {onDelete && (
+        <AlertModal
+          isOpen={open}
+          onClose={() => setOpen(false)}
+          onConfirm={onDelete}
+          loading={loading}
+        />
+      )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">

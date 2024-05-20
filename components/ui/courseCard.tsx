@@ -13,6 +13,8 @@ import { EllipsisVertical } from "lucide-react";
 import CellAction from "./cell-action";
 import Link from "next/link";
 import { redirect, useParams, useRouter } from "next/navigation";
+import useDeleteRequest from "@/actions/useDeleteREquest";
+import toast from "react-hot-toast";
 
 /**
  * CourseCard component
@@ -32,6 +34,22 @@ function CourseCard({ course, className }: CourseCardProps): JSX.Element {
   const handleUpdate = () => {
     router.push(`/courses/editcourse/${course.id}`);
   };
+  const { deleteData, isLoading } = useDeleteRequest();
+  const handleDelete = () => {
+    deleteData({
+      url: `courses/${course.id}`,
+      onSuccess: () => {
+        toast.success("Course deleted successfully");
+        router.refresh();
+      },
+      onError: (error) => {
+        toast.error(
+          "something went wrong Error deleting course please try again"
+        );
+        console.log("error", error);
+      },
+    });
+  };
   return (
     <Card
       className={cn(
@@ -47,9 +65,10 @@ function CourseCard({ course, className }: CourseCardProps): JSX.Element {
         <CardDescription>{course.description}</CardDescription>
         <CellAction
           id={course.id}
-          className="hover:cursor-pointer  absolute right-[5px] top-2"
+          className="hover:cursor-pointer  absolute right-[5px] top-2 dark:text-slate-900 "
           type="course"
           onUpdate={handleUpdate}
+          onDelete={handleDelete}
         />
       </CardHeader>
     </Card>

@@ -1,7 +1,8 @@
 "use client";
 
+import CellAction from "@/components/ui/cell-action";
 import { ColumnDef } from "@tanstack/react-table";
-import CellAction from "./cell-action";
+
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -13,6 +14,10 @@ export type StudentColumn = {
 
 export const columns: ColumnDef<StudentColumn>[] = [
   {
+    accessorKey: "id",
+    header: "Id",
+  },
+  {
     accessorKey: "name",
     header: "Name",
   },
@@ -23,6 +28,6 @@ export const columns: ColumnDef<StudentColumn>[] = [
   },
   {
     id: "action",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => <CellAction id={row.original.id} type={row.original.name} key={row.original.id} />,
   },
 ];

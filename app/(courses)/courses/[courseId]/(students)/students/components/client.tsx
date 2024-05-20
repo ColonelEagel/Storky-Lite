@@ -22,12 +22,12 @@ const StudentClient: React.FC<StudentClientProps> = ({ data }) => {
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title={`Categories (${data.length})`}
-          description="Manage Categories for your store"
+          title={`students (${data.length})`}
+          description="Manage students for this course."
         />
-        <Button onClick={() => router.push(`/${params.storeId}/students/new`)}>
+        <Button onClick={() => router.push(`/courses/${params.courseId}/students/new`)}>
           <Plus className="mr-2 h-4 w-4" />
-          Add New
+          invite new student
         </Button>
       </div>
       <Separator />

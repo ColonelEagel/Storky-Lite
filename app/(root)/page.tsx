@@ -6,9 +6,14 @@ import { Separator } from "@/components/ui/separator";
 
 import GetCourses from "../../actions/getCourses";
 import Loading from "./loading";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const DashboardPage = () => {
   const { courses, isLoading } = GetCourses();
+  const { data: session } = useSession();
+  const isAdmin =session?.user.user.role === "instructor";
+
 
   const TotalCourses = courses.length;
   const totalSessions = 5;
@@ -59,7 +64,7 @@ const DashboardPage = () => {
               <div className="text-2xl font-bold">{lessons}</div>
             </CardContent>
           </Card>
-          <Card>
+        {isAdmin&&  <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">students</CardTitle>
               <CircleUser className="h-4 w-4 text-muted-foreground" />
@@ -67,7 +72,7 @@ const DashboardPage = () => {
             <CardContent>
               <div className="text-2xl font-bold">{students}</div>
             </CardContent>
-          </Card>
+          </Card>}
         </div>
       </div>
     </div>

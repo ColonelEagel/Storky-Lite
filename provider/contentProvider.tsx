@@ -15,12 +15,6 @@ export default function ContentProvider({
   const { data: session, status } = useSession();
   //   const [content, setContent] = useState<Content[]>([]);
   const { content, isLoading } = GetContent({ courseId, sessionId });
-  console.log("content", content);
-  useEffect(() => {
-    if (status === "authenticated" && session && session.user.token) {
-      // Fetch content here if needed
-    }
-  }, [status, session, session?.user.token]);
 
   return (
     <>
