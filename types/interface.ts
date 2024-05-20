@@ -79,7 +79,7 @@ export interface User {
   role?: string;
   userName?: string;
   token?: string;
-  user: UserState;
+  user?: UserState;
 }
 
 export interface UserState {

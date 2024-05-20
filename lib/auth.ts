@@ -28,8 +28,8 @@ export const authOptions: NextAuthOptions = {
         try {
           // Add logic here to look up the user from the credentials supplied
           const { email, password } = credentials as any;
-          console.log(credentials);
-          console.log(email, password);
+          // console.log(credentials);
+          // console.log(email, password);
           if (!email || !password) {
             throw new Error(
               "Invalid credentials. Please provide a username and password."
@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
           if (res.status === 200) {
             const user = await res.data;
             if (user) {
-              console.log(user);
+              // console.log(user);
               return user;
             } else {
               throw new Error("User not found");
