@@ -28,6 +28,8 @@ export const columns: ColumnDef<StudentColumn>[] = [
   },
   {
     id: "action",
-    cell: ({ row }) => <CellAction id={row.original.id} type={row.original.name} key={row.original.id} />,
+    cell: ({ row }) => <CellAction id={row.original.id} type={row.original.name} key={row.original.id} onDelete={function (): void {
+      throw new Error("Function not implemented yet.");
+    } } loading={false} />,
   },
 ];
