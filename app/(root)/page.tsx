@@ -30,7 +30,8 @@ const HomePage = () => {
   const { content, isLoading: contentLoading } = useGetAllContent();
 
   const { data: session, status } = useSession();
-  const isAdmin = session?.user.user.role === "instructor";
+  const isAdmin = session?.user?.user?.role === "instructor";
+
   useEffect(() => {
     console.log("Status:", status);
     console.log("Session:", session);
@@ -54,7 +55,7 @@ const HomePage = () => {
     <div className="flex-col min-h-screen">
       <div className="flex-1 space-y-4 p-8 pt-6">
         <Heading
-          title={`Welcome back, ${session?.user.user.name}!`}
+          title={`Welcome back, ${session?.user?.user?.name}!`}
           description="Here's an Overview of your courses"
         />
         <Separator />

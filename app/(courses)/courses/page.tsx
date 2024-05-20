@@ -13,7 +13,8 @@ import GetCourses from "@/actions/useGetCourses";
 function CoursesPage({ params }: { params: { courseId: string } }) {
   const { data: session, status } = useSession();
 
-  const isAdmin = session?.user.user.role === "instructor";
+  const isAdmin = session?.user?.user?.role === "instructor";
+
 
   const { courses, isLoading } = GetCourses();
   console.log("Courses:", courses);

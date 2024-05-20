@@ -33,19 +33,11 @@ function SingleCourse({ params }: { params: { courseId: string } }) {
   const router = useRouter();
 
   // Get the session data and status
-  const { data: session, status } = useSession();
-
-  const isAdmin = session?.user.user.role === "instructor";
-  // Get the courses data and loading status
+  const { data: session, status } = useSession(); 
+   // Get the courses data and loading status
   const { courses, isLoading } = useGetCourses();
 
-  // Convert the courseId parameter to a number
-  const courseIdNumber = Number(params.courseId);
-
-  // Find the course with the matching ID
-  const foundCourse = courses.find((course) => +course.id === courseIdNumber);
-
-  // If not authenticated, redirect to login page
+    // If not authenticated, redirect to login page
   if (status === "unauthenticated") {
     router.push("/login");
     return null;
@@ -54,6 +46,17 @@ function SingleCourse({ params }: { params: { courseId: string } }) {
   if (status === "loading" || isLoading) {
     return <Loading />;
   }
+  if(!session)return
+  const isAdmin = session?.user?.user?.role === "instructor";
+
+
+  // Convert the courseId parameter to a number
+  const courseIdNumber = Number(params.courseId);
+
+  // Find the course with the matching ID
+  const foundCourse = courses.find((course) => +course.id === courseIdNumber);
+
+
 
   // Render the course component
   return (

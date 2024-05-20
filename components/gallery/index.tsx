@@ -34,7 +34,8 @@ const CourseGallery = () => {
   const { data: session } = useSession();
   const { deleteData, isLoading: isDeleting } = useDeleteRequest();
 
-  const isAdmin = session?.user.user.role === "instructor";
+  const isAdmin = session?.user?.user?.role === "instructor";
+
 
   console.log("sessions", sessions);
   const courseIdNumber = Number(courseId);

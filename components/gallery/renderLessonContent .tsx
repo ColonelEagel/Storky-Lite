@@ -44,7 +44,8 @@ const RenderLessonContent: React.FC<renderLessonContentProps> = ({
       },
     });
   };
-  const isAdmin = session?.user.user.role === "instructor";
+  const isAdmin = session?.user?.user?.role === "instructor";
+ 
 
   const handleUpdate = (id: string) => {
     console.log("Update content", id);
