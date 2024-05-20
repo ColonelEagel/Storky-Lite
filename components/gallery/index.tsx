@@ -21,19 +21,18 @@ import GetSessions from "@/actions/getSessions";
 
 import ContentProvider from "@/provider/contentProvider";
 import { useSession } from "next-auth/react";
+import useDeleteRequest from "@/actions/useDeleteREquest";
+import toast from "react-hot-toast";
+import { Loader } from "../ui/loader";
+import NoResults from "../ui/no-results";
 
 const CourseGallery = () => {
-  const courseId = useParams().courseId?.toString();
+  const { courseId } = useParams();
+  const courseIdString = courseId.toString();
   const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false);
-  const { sessions, isLoading } = GetSessions(courseId);
+  const { sessions, isLoading } = GetSessions(courseIdString);
   const { data: session } = useSession();
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-  if (!isMounted) {
-    return null;
-  }
+  const { deleteData, isLoading: isDeleting } = useDeleteRequest();
 
   const isAdmin = session?.user.user.role === "instructor";
 
@@ -55,6 +54,22 @@ const CourseGallery = () => {
   //     isLoading,
   //   };
   // });
+  if (isLoading) return <Loader />;
+  const handleDelete = (sessionId: string) => {
+    deleteData({
+      url: `courses/${courseId}/sessions/${sessionId}`,
+      onSuccess: () => {
+        toast.success("Course deleted successfully");
+        router.push( `courses/${courseId}`);
+      },
+      onError: (error: any) => {
+        toast.error(
+          "something went wrong Error deleting course please try again"
+        );
+        console.log("error", error);
+      },
+    });
+  };
 
   const handelSessionUpdate = (sessionId: string) => {
     router.push(`/courses/${courseId}/editSession/${sessionId}`);
@@ -66,63 +81,71 @@ const CourseGallery = () => {
   };
 
   return (
-    <TabGroup
-      as="div"
-      className="flex gap-4 items-center justify-center flex-col-reverse md:flex-row p-14"
-    >
-      <div className="mx-auto mt-6  min-w-[250px] max-w-2xl sm:block  md:p-14 flex-1">
-        <TabList className="flex flex-col gap-6 ">
-          <Accordion type="single" collapsible>
-            {sessionsData &&
-              sessionsData?.map((session, index) => {
-                return (
-                  <>
-                    <AccordionItem
-                      value={`item-${index + 1}`}
-                      key={session.id}
-                      className="relative"
-                    >
-                      {isAdmin && (
-                        <CellAction
-                          onUpdate={() => handelSessionUpdate(session.id)}
-                          type="session"
-                          id={session.id}
-                          className="hover:cursor-pointer absolute right-[10px] top-3"
+    <>
+      {sessions ? (
+        <TabGroup
+          as="div"
+          className="flex gap-4 items-center justify-center flex-col-reverse md:flex-row p-14"
+        >
+          <div className="mx-auto mt-6  min-w-[250px] max-w-2xl sm:block  md:p-14 flex-1">
+            <TabList className="flex flex-col gap-6 ">
+              <Accordion type="single" collapsible>
+                {sessionsData &&
+                  sessionsData?.map((session, index) => {
+                    return (
+                      <>
+                        <AccordionItem
+                          value={`item-${index + 1}`}
+                          key={session.id}
+                          className="relative"
                         >
-                          <DropdownMenuItem
-                            onClick={() => handelContentUpdate(session.id)}
-                          >
-                            <Plus className="mr-2 h-4 w-4" />
-                            Add content
-                          </DropdownMenuItem>
-                        </CellAction>
-                      )}
-                      <AccordionTrigger>
-                        <div className="flex justify-between items-center w-full">
-                          <p className="">{session.name}</p>
-                        </div>
-                      </AccordionTrigger>
-                      <RenderLessonContent
-                        sessionId={session.id}
-                        courseId={courseId}
-                      />
-                    </AccordionItem>
-                  </>
-                );
-              })}
-          </Accordion>
-        </TabList>
-      </div>
-      <TabPanels className="aspect-square h-96  relative  border-s-4  flex-1 max-w-2xl">
-        {sessionsData?.map((content) => (
-          <ContentProvider
-            key={content.id}
-            courseId={courseId}
-            sessionId={content.id}
-          />
-        ))}
-      </TabPanels>
-    </TabGroup>
+                          {isAdmin && (
+                            <CellAction
+                              onUpdate={() => handelSessionUpdate(session.id)}
+                              onDelete={() => handleDelete(session.id)}
+                              loading={isDeleting}
+                              type="session"
+                              id={session.id}
+                              className="hover:cursor-pointer absolute right-[10px] top-3"
+                            >
+                              <DropdownMenuItem
+                                onClick={() => handelContentUpdate(session.id)}
+                              >
+                                <Plus className="mr-2 h-4 w-4" />
+                                Add content
+                              </DropdownMenuItem>
+                            </CellAction>
+                          )}
+                          <AccordionTrigger>
+                            <div className="flex justify-between items-center w-full">
+                              <p className="">{session.name}</p>
+                            </div>
+                          </AccordionTrigger>
+                          <RenderLessonContent
+                            sessionId={session.id}
+                            courseId={courseIdString}
+                          />
+                        </AccordionItem>
+                      </>
+                    );
+                  })}
+              </Accordion>
+            </TabList>
+          </div>
+          <TabPanels className="aspect-square h-96  relative  border-s-4  flex-1 max-w-2xl">
+            {sessionsData?.map((content) => (
+              <ContentProvider
+                key={content.id}
+                courseId={courseIdString}
+                sessionId={content.id}
+              />
+            ))}
+          </TabPanels>
+        </TabGroup>
+      ) : (
+        <NoResults />
+      )}
+    </>
   );
 };
 

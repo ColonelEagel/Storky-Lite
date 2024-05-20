@@ -9,10 +9,9 @@ import {
 } from "@/components/ui/card";
 import { CourseData, Session } from "@/types/interface";
 import { cn } from "@/lib/utils";
-import { EllipsisVertical } from "lucide-react";
 import CellAction from "./cell-action";
 import Link from "next/link";
-import { redirect, useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import useDeleteRequest from "@/actions/useDeleteREquest";
 import toast from "react-hot-toast";
 
@@ -40,9 +39,9 @@ function CourseCard({ course, className }: CourseCardProps): JSX.Element {
       url: `courses/${course.id}`,
       onSuccess: () => {
         toast.success("Course deleted successfully");
-        router.refresh();
+        router.push("/courses");
       },
-      onError: (error) => {
+      onError: (error: any) => {
         toast.error(
           "something went wrong Error deleting course please try again"
         );
@@ -69,6 +68,7 @@ function CourseCard({ course, className }: CourseCardProps): JSX.Element {
           type="course"
           onUpdate={handleUpdate}
           onDelete={handleDelete}
+          loading={isLoading}
         />
       </CardHeader>
     </Card>
