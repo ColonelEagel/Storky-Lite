@@ -38,11 +38,11 @@ const usePostRequest = <T>() => {
    */
   const postData = async (options: RequestOptions<T>) => {
     const { url, data, onSuccess, onError, headers = {} } = options;
-
+    console.log("options", options);
     setLoading(true);
     try {
       const token = session?.user?.token;
-      if (!token) {
+      if (!token && !url.includes("signup")) {
         throw new Error("Session is not authenticated");
       }
 
@@ -77,4 +77,3 @@ const usePostRequest = <T>() => {
 };
 
 export default usePostRequest;
-

@@ -87,6 +87,7 @@ const SignUpForm: FC = () => {
    * @param data - The form data.
    */
   const onSubmit = async (data: FormData) => {
+    console.log(data);
     try {
       // Make a POST request to the server to sign up the user
       await postData({
@@ -99,7 +100,8 @@ const SignUpForm: FC = () => {
           form.reset();
         },
         // Handle error response
-        onError: () => {
+        onError: (error) => {
+          console.log("error", error);
           toast.error("Oops! Something went wrong. Please try again later.");
         },
       });
@@ -115,24 +117,20 @@ const SignUpForm: FC = () => {
         className="h-full flex w-full flex-col items-center justify-center  backdrop-blur-[10px]
                     rounded-3xl ring-white/80   ring-2 shadow-inner py-10  px-20 gap-4 "
       >
-        {/* Header component for the sign up form */
-        }
+        {/* Header component for the sign up form */}
         <HeaderComponent
           title="Sign Up"
           text="Welcome to Storky🌹"
           className="mb-5 text-center"
         />
         <Form {...form}>
-          {/* Form for the sign up form */
-          }
+          {/* Form for the sign up form */}
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col space-y-6"
           >
-            {/* Form fields for the sign up form */
-            }
-            {/* Full Name field */
-            }
+            {/* Form fields for the sign up form */}
+            {/* Full Name field */}
             <FormField
               control={form.control}
               name="name"
@@ -152,8 +150,7 @@ const SignUpForm: FC = () => {
                 </FormItem>
               )}
             />
-            {/* Email field */
-            }
+            {/* Email field */}
             <FormField
               control={form.control}
               name="email"
@@ -173,8 +170,7 @@ const SignUpForm: FC = () => {
                 </FormItem>
               )}
             />
-            {/* Password field */
-            }
+            {/* Password field */}
             <FormField
               control={form.control}
               name="password"
@@ -194,8 +190,7 @@ const SignUpForm: FC = () => {
                 </FormItem>
               )}
             />
-            {/* Confirm Password field */
-            }
+            {/* Confirm Password field */}
             <FormField
               control={form.control}
               name="passwordConfirm"
@@ -215,8 +210,7 @@ const SignUpForm: FC = () => {
                 </FormItem>
               )}
             />
-            {/* Submit button for the sign up form */
-            }
+            {/* Submit button for the sign up form */}
             <Button
               type="submit"
               variant="outline"
@@ -234,8 +228,7 @@ const SignUpForm: FC = () => {
             </Button>
           </form>
         </Form>
-        {/* Link to the login page */
-        }
+        {/* Link to the login page */}
         <p className="text-sm text-center">
           Already have an account?{" "}
           <Link
