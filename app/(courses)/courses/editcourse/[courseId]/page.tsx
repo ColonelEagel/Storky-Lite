@@ -8,11 +8,6 @@ import NoResults from "@/components/ui/no-results";
 // Import the CourseForm component for creating and editing courses.
 import { CourseForm } from "../components/courseForm";
 
-// Import dummy data for courses.
-import { dummyCourses } from "@/data/data";
-
-// Import the useSession hook from next-auth/react for accessing session data.
-import { useSession } from "next-auth/react";
 
 // Import the useRouter hook from Next.js for accessing the router object.
 import { useRouter } from "next/navigation";
