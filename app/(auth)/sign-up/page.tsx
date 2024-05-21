@@ -1,7 +1,7 @@
 import SignUpForm from "@/components/signUp";
 import React from "react";
 
-function signUp() {
+function SignUp() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-24">
       <SignUpForm />
@@ -9,4 +9,4 @@ function signUp() {
   );
 }
 
-export default signUp;
+export default SignUp;

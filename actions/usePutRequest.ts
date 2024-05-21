@@ -40,6 +40,7 @@ const usePutRequest = <T>() => {
       if (!token) {
         throw new Error("Session is not authenticated");
       }
+      console.log(process.env)
 
       const response = await axios.put(`${backEnd}/${url}`, data, {
         headers: {

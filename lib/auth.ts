@@ -93,7 +93,7 @@ export const authOptions: NextAuthOptions = {
   // Customize the pages for authentication
   pages: {
     signIn: "/login",
-    newUser: "/signup",
+    newUser: "/sign-up",
   },
 };
 

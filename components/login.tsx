@@ -174,7 +174,7 @@ const LoginForm = () => {
         <p className="ml-5 mb-5 text-[#133059] backdrop-blur-[5px] dark:text-white">
           new to storky?{" "}
           <Link
-            href="/signup"
+            href="/sign-up"
             className="text-blue-500 underline hover:text-blue-600"
           >
             sign up
