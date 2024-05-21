@@ -58,6 +58,7 @@ export interface Content {
   sessionId: string;
   /** The name of the content. */
   name: string;
+  filename : File 
   /** The type of the content (e.g. "image", "video", "pdf"). */
   type: string;
   /** The URL of the content. */

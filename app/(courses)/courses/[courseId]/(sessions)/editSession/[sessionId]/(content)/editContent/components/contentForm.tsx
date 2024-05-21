@@ -112,7 +112,7 @@ export const ContentForm: React.FC<ContentFormProps> = ({ initialData }) => {
           data: data,
           onSuccess: () => {
             toast.success(toastMessage);
-            router.push("/courses");
+            router.push(`/courses/${courseId}`);
           },
         });
       } else {
