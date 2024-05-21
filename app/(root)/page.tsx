@@ -9,10 +9,8 @@ import useGetCourses from "../../actions/useGetCourses";
 import Loading from "./loading";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import useGetSessions from "@/actions/useGetSessions";
-import { SetStateAction, useEffect, useState } from "react";
-import { CourseData, Session } from "@/types/interface";
-import useGetRequest from "@/actions/useGetRequest";
+
+import { useEffect } from "react";
 import GetAllSessions from "@/actions/useGetAllSessions";
 import useGetAllStudents from "@/actions/useGetAllStudents";
 import useGetAllContent from "@/actions/getAllContents";

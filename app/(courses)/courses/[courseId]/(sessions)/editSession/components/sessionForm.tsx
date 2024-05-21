@@ -70,7 +70,6 @@ export const SessionForm: React.FC<SessionFormProps> = ({ initialData }) => {
       // Initialize more fields here
     },
   });
-  console.log(courseId);
   /**
    * Handles form submission.
    * If initialData exists, sends a PATCH request to update the session.

@@ -13,6 +13,12 @@ const Loading = () => {
         <Skeleton className=" rounded-xl h-36 " />
         <Skeleton className=" rounded-xl h-36 " />
         <Skeleton className=" rounded-xl h-36 " />
+        <Skeleton className=" rounded-xl h-36 " />
+        <Skeleton className=" rounded-xl h-36 " />
+        <Skeleton className=" rounded-xl h-36 " />
+        <Skeleton className=" rounded-xl h-36 " />
+        <Skeleton className=" rounded-xl h-36 " />
+        <Skeleton className=" rounded-xl h-36 " />
       </div>
     </Container>
   );

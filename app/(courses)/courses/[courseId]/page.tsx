@@ -19,7 +19,7 @@ import NoResults from "@/components/ui/no-results";
 import CourseGallery from "@/components/gallery";
 import Redirect from "@/components/ui/redirect";
 
-import Loading from "../loading";
+import Loading from "./loading";
 
 /**
  * SingleCourse is a functional component that renders a single course based on the courseId parameter.
