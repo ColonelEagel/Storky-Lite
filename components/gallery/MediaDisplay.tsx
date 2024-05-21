@@ -5,15 +5,13 @@ import {
 import NextImage from "next/image";
 
 const ImageComponent: React.FC<MediaDisplayComponentsProps> = ({ url }) => (
-  <NextImage
-    src={url}
-    alt="Image"
-    fill
-    className="object-cover object-center"
-  />
+  <div
+    className="relative w-full h-full bg-contain bg-no-repeat bg-center"
+    style={{ backgroundImage: `url("${url}")` }}
+  ></div>
 );
 const VideoComponent: React.FC<MediaDisplayComponentsProps> = ({ url }) => (
-  <video controls className="object-cover object-center h-full w-full">
+  <video controls className="object-cover object-center h-full aspect-video">
     <source src={url} type="video/mp4" />
   </video>
 );

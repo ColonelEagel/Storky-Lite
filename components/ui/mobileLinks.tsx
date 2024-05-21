@@ -1,6 +1,7 @@
 import { links } from '@/data/data';
 import Link from 'next/link';
 import { usePathname } from "next/navigation";
+import LoginButton from './loginButton';
 
 
 function MobileLinks({ onClick }:{ onClick?: () => void }) {
@@ -14,6 +15,7 @@ function MobileLinks({ onClick }:{ onClick?: () => void }) {
                     {item.title}
                 </Link>
             ))}
+            <LoginButton />
         </>
     )
 }

@@ -25,7 +25,7 @@ export default function LoginButton() {
       ) : (
         <>
           <Link href="/login">Login</Link>
-          <Link href="/signup">sign up</Link>
+          <Link href="/sign-up">sign up</Link>
         </>
       )}
     </>

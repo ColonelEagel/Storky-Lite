@@ -13,7 +13,7 @@ const GalleryTab: React.FC<MediaDisplayProps> = ({ url, type }) => {
           {({ selected }) => (
             <span
               className={cn(
-                "absolute inset-0 rounded-md ring-2 ring-offset-2 w-full h-full ",
+                "absolute inset-0 rounded-md w-full h-full border-zinc-100 border-2",
                 selected ? "ring-black" : "ring-transparent"
               )}
             >
