@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "react-hot-toast";
 
+// UI components
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,8 +19,13 @@ import { Input } from "@/components/ui/input";
 import HeaderComponent from "./ui/HeaderComponent";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+
+// Custom hooks
 import usePostRequest from "@/actions/usePostRequest";
 
+/**
+ * The form data schema used for validation.
+ */
 export type FormData = {
   name: string;
   email: string;
@@ -27,12 +33,18 @@ export type FormData = {
   passwordConfirm: string;
 };
 
+/**
+ * Defines the form schema for validation using Zod.
+ */
 const formSchema = z
   .object({
+    // Full Name must be at least 2 characters long
     name: z
       .string()
       .min(2, { message: "Full Name must be at least 2 characters." }),
+    // Email must be a valid email address
     email: z.string().email({ message: "Invalid email address." }),
+    // Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character
     password: z
       .string()
       .min(8)
@@ -43,6 +55,7 @@ const formSchema = z
             "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
         }
       ),
+    // Passwords must match
     passwordConfirm: z.string(),
   })
   .refine((values) => values.password === values.passwordConfirm, {
@@ -50,52 +63,76 @@ const formSchema = z
     path: ["passwordConfirm"],
   });
 
+/**
+ * The inferred type from the form schema.
+ */
 type ProductFormValues = z.infer<typeof formSchema>;
 
+/**
+ * The sign up form component.
+ */
 const SignUpForm: FC = () => {
+  // Custom hook for making POST requests to the server
   const { loading, postData } = usePostRequest();
 
+  // Initialize the form using the form schema
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
+    // Set default values for form fields
     defaultValues: { name: "", email: "", password: "", passwordConfirm: "" },
   });
 
-  // console.log(process.env);
+  /**
+   * Handles form submission.
+   * @param data - The form data.
+   */
   const onSubmit = async (data: FormData) => {
     try {
+      // Make a POST request to the server to sign up the user
       await postData({
         url: `auth/signup`,
         data: data,
+        // Handle success response
         onSuccess: () => {
           toast.success("Logged In successfully! Welcome back to Storky");
+          // Reset the form fields
           form.reset();
         },
+        // Handle error response
         onError: () => {
           toast.error("Oops! Something went wrong. Please try again later.");
         },
       });
     } catch (error) {
+      // Handle any other errors
       toast.error("Oops! Something went wrong. Please try again later.");
     }
   };
-
   return (
+    // Main container for the sign up form
     <div className="max-w-md h-fit mx-auto border rounded-3xl border-gray-500 shadow-xl hover:shadow-2xl">
       <div
         className="h-full flex w-full flex-col items-center justify-center  backdrop-blur-[10px]
                     rounded-3xl ring-white/80   ring-2 shadow-inner py-10  px-20 gap-4 "
       >
-        {" "}
+        {/* Header component for the sign up form */
+        }
         <HeaderComponent
           title="Sign Up"
           text="Welcome to Storky🌹"
           className="mb-5 text-center"
         />
         <Form {...form}>
+          {/* Form for the sign up form */
+          }
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col space-y-6"
           >
+            {/* Form fields for the sign up form */
+            }
+            {/* Full Name field */
+            }
             <FormField
               control={form.control}
               name="name"
@@ -115,6 +152,8 @@ const SignUpForm: FC = () => {
                 </FormItem>
               )}
             />
+            {/* Email field */
+            }
             <FormField
               control={form.control}
               name="email"
@@ -134,6 +173,8 @@ const SignUpForm: FC = () => {
                 </FormItem>
               )}
             />
+            {/* Password field */
+            }
             <FormField
               control={form.control}
               name="password"
@@ -153,6 +194,8 @@ const SignUpForm: FC = () => {
                 </FormItem>
               )}
             />
+            {/* Confirm Password field */
+            }
             <FormField
               control={form.control}
               name="passwordConfirm"
@@ -172,6 +215,8 @@ const SignUpForm: FC = () => {
                 </FormItem>
               )}
             />
+            {/* Submit button for the sign up form */
+            }
             <Button
               type="submit"
               variant="outline"
@@ -189,6 +234,8 @@ const SignUpForm: FC = () => {
             </Button>
           </form>
         </Form>
+        {/* Link to the login page */
+        }
         <p className="text-sm text-center">
           Already have an account?{" "}
           <Link

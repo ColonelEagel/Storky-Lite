@@ -2,7 +2,6 @@ import { CourseData, Session } from "@/types/interface";
 import { useEffect, useState } from "react";
 import useGetRequest from "./useGetRequest";
 
-
 /**
  * The GetAllSessions component fetches all sessions for a list of courses and returns them.
  * @param {GetAllSessionsProps} props - The component props.
@@ -12,6 +11,12 @@ import useGetRequest from "./useGetRequest";
 interface GetAllSessionsProps {
   courses: CourseData[];
 }
+
+/**
+ * Custom hook that fetches all sessions for a list of courses.
+ * @param {GetAllSessionsProps} props - The component props.
+ * @returns {Session[]} - The list of sessions.
+ */
 export default function useGetAllSessions({ courses }: GetAllSessionsProps) {
   const { fetchData } = useGetRequest<Session[]>(); // Hook to make GET requests.
   const [sessions, setSessions] = useState<Session[]>([]); // State to store sessions.
@@ -33,11 +38,16 @@ export default function useGetAllSessions({ courses }: GetAllSessionsProps) {
       setSessions(allSessions); // Set the state with the fetched sessions.
     };
 
+    // Fetch sessions only if there are courses.
     if (courses.length > 0) {
-      fetchAllSessions(); // Fetch sessions if there are courses.
+      fetchAllSessions();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courses]); // Re-fetch sessions if courses change.
 
-  return sessions; // Return the fetched sessions.
+    // Re-fetch sessions if courses change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [courses]);
+
+  // Return the fetched sessions.
+  return sessions;
 }
+

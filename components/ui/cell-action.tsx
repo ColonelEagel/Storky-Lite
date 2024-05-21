@@ -1,29 +1,19 @@
 "use client";
 
+// Importing necessary components and libraries
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"; // Importing the DropdownMenu component and its child components
+import { Button } from "@/components/ui/button"; // Importing the Button component
+import { Copy, Edit, EllipsisVertical, Trash } from "lucide-react"; // Importing icons from lucide-react library
+import { toast } from "react-hot-toast"; // Importing the toast library for displaying notifications
+import { AlertModal } from "@/components/modals/alert-modal"; // Importing the AlertModal component for displaying confirmation modal
+import { useState } from "react"; // Importing the useState hook from React
+import { CellActionProps } from "@/types/interface"; // Importing the CellActionProps interface that defines the props for the CellAction component
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Copy, Edit, EllipsisVertical, Trash } from "lucide-react";
-import { toast } from "react-hot-toast";
-import { AlertModal } from "@/components/modals/alert-modal";
-import { useState } from "react";
-
-interface CellActionProps {
-  id: string;
-  className?: string;
-  type: string;
-  children?: React.ReactNode;
-  onUpdate?: () => void;
-  onDelete: () => void;
-  loading: boolean;
-}
-
+/**
+ * CellAction component is a reusable component that renders a dropdown menu with actions for a cell.
+ * @param {CellActionProps} props - The props for the CellAction component
+ * @returns {JSX.Element} - The JSX element for the CellAction component
+ */
 const CellAction: React.FC<CellActionProps> = ({
   id,
   className,
@@ -33,44 +23,20 @@ const CellAction: React.FC<CellActionProps> = ({
   onDelete,
   loading,
 }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // State variable for controlling the open state of the confirmation modal
 
-  // const onUpdate = () => {
-  //     if (type === "course") {
-  //         router.push(`/courses/edit/${data.id}`)
-  //     } else if (type === "session") {
-  //         router.push(`/courses/${params.courseId}/editSession/${data.id}`)
-  //     }
-  // }
+  /**
+   * Function to copy the ID of the cell to the clipboard and display a success toast message.
+   * @param {string} id - The ID of the cell
+   */
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
     toast.success(`${type} ID copied to the clipboard.`);
   };
-  // const onDelete = async () => {
-  //   if (id) {
-  //     try {
-  //       setLoading(true);
-  //       // await axios.delete(`/api/courses${params.courseId}/${type}s/${data.id}`)
 
-  //       // console.log(data)
-  //       router.refresh();
-  //       console.log(params);
-  //       toast.success(`The ${type} has been deleted successfully.`);
-  //     } catch (error) {
-  //       toast.error(
-  //         "Something went wrong while deleting the Course, try again later."
-  //       );
-  //     } finally {
-  //       setOpen(false);
-  //       setLoading(false);
-  //     }
-  //   } else {
-  //     console.error("data.id is null or undefined");
-  //   }
-  // };
-  // console.log(typeof data)
   return (
     <div className={className}>
+      {/* Rendering the confirmation modal if onDelete prop is provided */}
       {onDelete && (
         <AlertModal
           isOpen={open}
@@ -80,6 +46,7 @@ const CellAction: React.FC<CellActionProps> = ({
         />
       )}
       <DropdownMenu>
+        {/* Rendering the DropdownMenuTrigger component with a Button component */}
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">open</span>
@@ -87,21 +54,26 @@ const CellAction: React.FC<CellActionProps> = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
+          {/* Rendering the DropdownMenuLabel component */}
           <DropdownMenuLabel>action</DropdownMenuLabel>
+          {/* Rendering the DropdownMenuItem component for copying the ID of the cell */}
           <DropdownMenuItem onClick={() => onCopy(id)}>
             <Copy className="mr-2 h-4 w-4" />
             Copy ID
           </DropdownMenuItem>
+          {/* Rendering the DropdownMenuItem component for updating the cell if onUpdate prop is provided */}
           {onUpdate && (
             <DropdownMenuItem onClick={() => onUpdate()}>
               <Edit className="mr-2 h-4 w-4" />
               update
             </DropdownMenuItem>
           )}
+          {/* Rendering the DropdownMenuItem component for deleting the cell */}
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="mr-2 h-4 w-4" />
             Delete
           </DropdownMenuItem>
+          {/* Rendering any additional child components if provided */}
           {children}
         </DropdownMenuContent>
       </DropdownMenu>
@@ -110,3 +82,4 @@ const CellAction: React.FC<CellActionProps> = ({
 };
 
 export default CellAction;
+

@@ -1,18 +1,33 @@
 "use client";
 
+// Import the zod library for defining schemas
 import * as z from "zod";
-import axios from "axios";
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useParams, useRouter } from "next/navigation";
 
+// Import the axios library for making HTTP requests
+import axios from "axios";
+
+// Import the useState hook from React for managing component state
+import { useState } from "react";
+
+// Import the zodResolver from react-hook-form for resolving zod schemas
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// Import the useForm hook from react-hook-form for managing form state
+import { useForm } from "react-hook-form";
+
+// Import the useParams hook from next/navigation for accessing URL parameters
+import { useParams } from "next/navigation";
+
+// Import the Trash component from the lucide-react library for rendering an icon
 import { Trash } from "lucide-react";
+
+// Import the toast library for displaying notifications
 import { toast } from "react-hot-toast";
 
-import Heading from "@/components/ui/heading";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+// Import the UI components
+import Heading from "@/components/ui/heading"; // Heading component for displaying titles and descriptions
+import { Button } from "@/components/ui/button"; // Button component for rendering interactive elements
+import { Separator } from "@/components/ui/separator"; // Separator component for visually separating content
 import {
   Form,
   FormControl,
@@ -20,9 +35,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from "@/components/ui/form"; // Form components for rendering form fields and labels
+import { Input } from "@/components/ui/input"; // Input component for rendering form input fields
+
+// Import the custom hook for making HTTP POST requests
 import usePostRequest from "@/actions/usePostRequest";
+
+/**
+ * Component for rendering a form for inviting a student to a course.
+ * 
+ * This component defines the form schema for validating the form data.
+ * It also imports the required UI components and hooks for managing form state and displaying notifications.
+ * 
+ * @returns The rendered form component.
+ */
 
 /**
  * Defines the schema for the form data.

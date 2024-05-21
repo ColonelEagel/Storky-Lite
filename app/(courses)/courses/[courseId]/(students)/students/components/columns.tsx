@@ -1,6 +1,6 @@
 "use client";
 
-import CellAction from "@/components/ui/cell-action";
+// import CellAction from "@/components/ui/cell-action";
 import { ColumnDef } from "@tanstack/react-table";
 
 
@@ -26,10 +26,10 @@ export const columns: ColumnDef<StudentColumn>[] = [
     header: "e-mail",
     cell: ({ row }) => row.original.email,
   },
-  {
-    id: "action",
-    cell: ({ row }) => <CellAction id={row.original.id} type={row.original.name} key={row.original.id} onDelete={function (): void {
-      throw new Error("Function not implemented yet.");
-    } } loading={false} />,
-  },
+  // {
+  //   id: "action",
+  //   cell: ({ row }) => <CellAction id={row.original.id} type={row.original.name} key={row.original.id} onDelete={function (): void {
+  //     throw new Error("Function not implemented yet.");
+  //   } } loading={false} />,
+  // },
 ];

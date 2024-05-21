@@ -6,6 +6,12 @@ import MobileNav from "./mobileNav";
 import NavLinks from "./ui/navLinks";
 import LoginButton from "./ui/loginButton";
 
+/**
+ * Navbar component
+ *
+ * This component renders the main navbar of the application.
+ * It includes the logo, navigation links, mobile menu, and theme toggle.
+ */
 const Navbar = () => {
   return (
     <div
@@ -15,13 +21,18 @@ const Navbar = () => {
     >
       {/* Logo */}
       <Logo className="mr-auto" />
+      
+      {/* Navigation links and mobile menu */}
       <div className="flex items-center gap-2 justify-between ">
         <div className="hidden md:flex gap-4 items-center justify-end flex-1">
+          {/* Navigation links */}
           <NavLinks />
+          {/* Login button */}
           <LoginButton />
         </div>
-        {/* Mobile Menu */}
+        {/* Mobile menu */}
         <MobileNav />
+        {/* Theme toggle */}
         <ThemeToggle />
       </div>
     </div>
@@ -29,3 +40,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

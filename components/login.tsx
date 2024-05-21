@@ -1,11 +1,24 @@
 "use client";
+/**
+ * @fileoverview This file contains the Login component.
+ * @module components/login
+ */
 
 import { FC, useState } from "react";
+
+// React hook form
 import { useForm } from "react-hook-form";
+
+// Resolver for Zod validation
 import { zodResolver } from "@hookform/resolvers/zod";
+
+// Zod schema validation
 import * as z from "zod";
 
+// React hot toast for showing toast notifications
 import { toast } from "react-hot-toast";
+
+// UI components
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,8 +31,14 @@ import {
 import { Input } from "@/components/ui/input";
 import HeaderComponent from "./ui/HeaderComponent";
 import { Loader2 } from "lucide-react";
+
+// Utils
 import { cn } from "@/lib/utils";
+
+// Next.js
 import Link from "next/link";
+
+// NextAuth.js
 import { signIn } from "next-auth/react";
 
 export type FormData = {

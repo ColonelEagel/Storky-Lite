@@ -2,7 +2,7 @@ import {
   MediaDisplayComponentsProps,
   MediaDisplayProps,
 } from "@/types/interface";
-import NextImage from "next/image";
+
 
 const ImageComponent: React.FC<MediaDisplayComponentsProps> = ({ url }) => (
   <div
