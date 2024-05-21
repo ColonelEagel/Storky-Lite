@@ -1,7 +1,13 @@
 "use client";
 
 // Importing necessary components and libraries
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"; // Importing the DropdownMenu component and its child components
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"; // Importing the DropdownMenu component and its child components
 import { Button } from "@/components/ui/button"; // Importing the Button component
 import { Copy, Edit, EllipsisVertical, Trash } from "lucide-react"; // Importing icons from lucide-react library
 import { toast } from "react-hot-toast"; // Importing the toast library for displaying notifications
@@ -34,17 +40,21 @@ const CellAction: React.FC<CellActionProps> = ({
     toast.success(`${type} ID copied to the clipboard.`);
   };
 
+  const handleDelete = () => {
+    setOpen(false);
+    onDelete();
+  };
   return (
     <div className={className}>
       {/* Rendering the confirmation modal if onDelete prop is provided */}
-      {onDelete && (
-        <AlertModal
-          isOpen={open}
-          onClose={() => setOpen(false)}
-          onConfirm={onDelete}
-          loading={loading}
-        />
-      )}
+
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={handleDelete}
+        loading={loading}
+      />
+
       <DropdownMenu>
         {/* Rendering the DropdownMenuTrigger component with a Button component */}
         <DropdownMenuTrigger asChild>
@@ -82,4 +92,3 @@ const CellAction: React.FC<CellActionProps> = ({
 };
 
 export default CellAction;
-

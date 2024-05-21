@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button"; // Importing the Button compone
 import { Separator } from "@/components/ui/separator"; // Importing the Separator component
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"; // Importing the form components
 import { Input } from "@/components/ui/input"; // Importing the Input component
-import { Textarea } from "@/components/ui/textarea"; // Importing the Textarea component
 import { AlertModal } from "@/components/modals/alert-modal"; // Importing the AlertModal component
 
 // Importing types

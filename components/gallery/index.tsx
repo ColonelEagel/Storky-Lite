@@ -72,7 +72,7 @@ const CourseGallery = () => {
       url: `courses/${courseId}/sessions/${sessionId}`,
       onSuccess: () => {
         toast.success("Session deleted successfully");
-        router.push(`/courses/${courseId}`);
+        router.refresh();
       },
       onError: (error: any) => {
         toast.error(
