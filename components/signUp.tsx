@@ -112,10 +112,10 @@ const SignUpForm: FC = () => {
   };
   return (
     // Main container for the sign up form
-    <div className="max-w-md h-fit mx-auto border rounded-3xl border-gray-500 shadow-xl hover:shadow-2xl">
+    <div className="w-screen max-w-lg h-fit mx-auto border rounded-3xl border-gray-500 shadow-xl hover:shadow-2xl">
       <div
         className="h-full flex w-full flex-col items-center justify-center  backdrop-blur-[10px]
-                    rounded-3xl ring-white/80   ring-2 shadow-inner py-10  px-20 gap-4 "
+                    rounded-3xl ring-white/80   ring-2 shadow-inner px-10 lg:px-20 gap-4 py-10"
       >
         {/* Header component for the sign up form */}
         <HeaderComponent
@@ -136,7 +136,7 @@ const SignUpForm: FC = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel className="">Full Name</FormLabel>
                   <FormControl>
                     <Input
                       type="text"

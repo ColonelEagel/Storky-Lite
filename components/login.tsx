@@ -101,10 +101,10 @@ const LoginForm = () => {
     "w-full rounded-md border border-gray-300 mb-5  outline-none focus:border-blue-500 focus:shadow-md";
 
   return (
-    <div className="max-w-md h-fit mx-auto border rounded-3xl border-gray-500 shadow-xl hover:shadow-2xl">
+    <div className="w-screen max-w-lg h-fit mx-auto border rounded-3xl border-gray-500 shadow-xl hover:shadow-2xl">
       <div
         className="h-full flex w-full flex-col items-center justify-center  backdrop-blur-[10px]
-                    rounded-3xl ring-white/80   ring-2 shadow-inner py-10  px-20 gap-4 "
+                    rounded-3xl ring-white/80   ring-2 shadow-inner px-10 lg:px-20 gap-4 py-10"
       >
         <HeaderComponent
           title="Log In"
